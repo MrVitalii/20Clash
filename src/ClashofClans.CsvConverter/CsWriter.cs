@@ -8,7 +8,7 @@ namespace ClashofClans.CsvConverter
         internal CsWriter(string name, IReadOnlyList<string> header, string[] types, string space)
         {
             using var writer = new StreamWriter($"CS Output/{Uppercase(name)}.cs");
-            writer.WriteLine($"namespace ClashofClans.Files.{space}");
+            writer.WriteLine($"using ClashofClans.Files.CsvHelpers;\nusing ClashofClans.Files.CsvReader;\n\nnamespace ClashofClans.Files.{space}");
             writer.WriteLine("{");
             writer.WriteLine($"    public class {Uppercase(name)} : Data");
             writer.WriteLine("    {");

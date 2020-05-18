@@ -16,8 +16,6 @@ namespace ClashofClans.Files.Logic
 
         public string InfoTID { get; set; }
 
-        public string SWF { get; set; }
-
         public int Speed { get; set; }
 
         public int Hitpoints { get; set; }
@@ -227,5 +225,25 @@ namespace ClashofClans.Files.Logic
         public bool NoDefence { get; set; }
 
         public string PreAttackEffect { get; set; }
+
+        public bool AbilityAffectsSummonedUnits { get; set; }
+
+        public string DefaultSkin { get; set; }
+
+        public string AbilityProjectile { get; set; }
+
+        public int AbilityProjectileBounces { get; set; }
+
+        public int AbilityProjectileRange { get; set; }
+
+        public int AbilityProjectileCount { get; set; }
+
+        public bool UseAutoHeroAbility { get; set; }
+
+        public int NewTargetAttackDelay { get; set; }
+
+        public int AbilityDamage { get; set; }
+
+        public string Gender { get; set; }
     }
 }

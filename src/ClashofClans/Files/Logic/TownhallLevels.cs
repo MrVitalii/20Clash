@@ -56,13 +56,13 @@ namespace ClashofClans.Files.Logic
 
         public int Cannon { get; set; }
 
-        public int Cannon_gearup { get; set; }
+        public int CannonGearup { get; set; }
 
         public int Wall { get; set; }
 
         public int ArcherTower { get; set; }
 
-        public int ArcherTower_gearup { get; set; }
+        public int ArcherTowerGearup { get; set; }
 
         public int WizardTower { get; set; }
 
@@ -70,7 +70,7 @@ namespace ClashofClans.Files.Logic
 
         public int Mortar { get; set; }
 
-        public int Mortar_gearup { get; set; }
+        public int MortarGearup { get; set; }
 
         public int AllianceCastle { get; set; }
 

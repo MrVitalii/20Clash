@@ -19,5 +19,9 @@ namespace ClashofClans.Files.Logic
         public bool IsCountry { get; set; }
 
         public bool HS { get; set; }
+
+        public string ChinaDisplayName { get; set; }
+
+        public string ChinaCountryCode { get; set; }
     }
 }

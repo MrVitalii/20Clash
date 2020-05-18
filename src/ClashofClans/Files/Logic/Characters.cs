@@ -12,11 +12,13 @@ namespace ClashofClans.Files.Logic
 
         public string Name { get; set; }
 
+        public int TroopLevel { get; set; }
+
+        public bool Deprecated { get; set; }
+
         public string TID { get; set; }
 
         public string InfoTID { get; set; }
-
-        public string SWF { get; set; }
 
         public int HousingSpace { get; set; }
 
@@ -44,9 +46,15 @@ namespace ClashofClans.Files.Logic
 
         public int DonateCost { get; set; }
 
+        public int DonateXP { get; set; }
+
+        public int DonateCount { get; set; }
+
         public int AttackRange { get; set; }
 
         public int AttackSpeed { get; set; }
+
+        public int CoolDownOverride { get; set; }
 
         public int DPS { get; set; }
 
@@ -100,7 +108,7 @@ namespace ClashofClans.Files.Logic
 
         public string Animation { get; set; }
 
-        public int UnitOfType { get; set; }
+        public string ProductionBuilding { get; set; }
 
         public bool IsJumper { get; set; }
 
@@ -224,6 +232,16 @@ namespace ClashofClans.Files.Logic
 
         public int ChainShootingDistance { get; set; }
 
+        public int ChainAttackDistance { get; set; }
+
+        public int ChainAttackMaxTargets { get; set; }
+
+        public int ChainAttackDelay { get; set; }
+
+        public int ChainAttackDamageReductionPercent { get; set; }
+
+        public string ChainAttackEffect { get; set; }
+
         public string PreAttackEffect { get; set; }
 
         public string MoveStartsEffect { get; set; }
@@ -264,6 +282,8 @@ namespace ClashofClans.Files.Logic
 
         public string SpecialAbilityEffect { get; set; }
 
+        public string SpecialAbilityIcon { get; set; }
+
         public bool DisableDonate { get; set; }
 
         public bool ScaleByTH { get; set; }
@@ -275,5 +295,57 @@ namespace ClashofClans.Files.Logic
         public int LoseHpInterval { get; set; }
 
         public int UpgradeLevelByTH { get; set; }
+
+        public string EvolveToCharacter { get; set; }
+
+        public string EvolveEffect { get; set; }
+
+        public int EvolveOnDamageDealt { get; set; }
+
+        public int EvolveTime { get; set; }
+
+        public bool CanAttackWhileMoving { get; set; }
+
+        public string PreferredMovementTarget { get; set; }
+
+        public bool RetargetAfterHit { get; set; }
+
+        public int Damage2 { get; set; }
+
+        public int Damage2Radius { get; set; }
+
+        public int Damage2Delay { get; set; }
+
+        public int Damage2Min { get; set; }
+
+        public int Damage2FalloffStart { get; set; }
+
+        public int Damage2FalloffEnd { get; set; }
+
+        public string DamageMultiplierTarget { get; set; }
+
+        public int DamageMultiplierPercent { get; set; }
+
+        public int FrostOnHitTime { get; set; }
+
+        public int FrostOnHitPercent { get; set; }
+
+        public bool DoesNotOpenCC { get; set; }
+
+        public string DefensiveTroop { get; set; }
+
+        public bool ReducedDmgToStorages { get; set; }
+
+        public string BunkerTroops { get; set; }
+
+        public int BunkerTroopCount1 { get; set; }
+
+        public int BunkerTroopCount2 { get; set; }
+
+        public int BunkerDegenerationTime { get; set; }
+
+        public int BunkerSpawnDist { get; set; }
+
+        public int HeroDamageMultiplier { get; set; }
     }
 }

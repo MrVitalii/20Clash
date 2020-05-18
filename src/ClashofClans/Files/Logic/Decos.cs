@@ -44,6 +44,8 @@ namespace ClashofClans.Files.Logic
 
         public bool NotInShop { get; set; }
 
+        public bool BPReward { get; set; }
+
         public int VillageType { get; set; }
 
         public int RedMul { get; set; }
@@ -61,5 +63,9 @@ namespace ClashofClans.Files.Logic
         public bool LightsOn { get; set; }
 
         public bool DecoPath { get; set; }
+
+        public string ActiveEffect { get; set; }
+
+        public int ActiveEffectDelay { get; set; }
     }
 }

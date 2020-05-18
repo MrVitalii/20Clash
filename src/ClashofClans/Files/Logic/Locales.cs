@@ -38,8 +38,14 @@ namespace ClashofClans.Files.Logic
 
         public string BoomboxStagingUrl { get; set; }
 
+        public bool BoomboxForYouEnabled { get; set; }
+
+        public bool BoomboxCommunityEnabled { get; set; }
+
         public string HelpshiftLanguageTagOverride { get; set; }
 
         public string ForcedFontName { get; set; }
+
+        public string SelfHelpUrl { get; set; }
     }
 }

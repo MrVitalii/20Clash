@@ -3,15 +3,17 @@ using ClashofClans.Files.CsvReader;
 
 namespace ClashofClans.Files.Logic
 {
-    public class ExperienceLevels : Data
+    public class OfferSettings : Data
     {
-        public ExperienceLevels(Row row, DataTable datatable) : base(row, datatable)
+        public OfferSettings(Row row, DataTable datatable) : base(row, datatable)
         {
             LoadData(this, GetType(), row);
         }
 
         public string Name { get; set; }
 
-        public int ExpPoints { get; set; }
+        public string Value { get; set; }
+
+        public int IntValue { get; set; }
     }
 }

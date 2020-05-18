@@ -21,5 +21,9 @@ namespace ClashofClans.Files.Logic
         public bool ShopCategoryArmy { get; set; }
 
         public bool ShopCategoryDefense { get; set; }
+
+        public bool Npc { get; set; }
+
+        public string ParentClass { get; set; }
     }
 }

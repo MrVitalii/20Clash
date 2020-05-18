@@ -20,6 +20,14 @@ namespace ClashofClans.Files.Logic
 
         public int ExpLevel { get; set; }
 
+        public string Type { get; set; }
+
+        public int TutorialUnlockTHLevel { get; set; }
+
+        public int TutorialTHLevel { get; set; }
+
+        public int minRecommendedTHLevel { get; set; }
+
         public string UnitType { get; set; }
 
         public int UnitCount { get; set; }
@@ -30,6 +38,8 @@ namespace ClashofClans.Files.Logic
 
         public int Elixir { get; set; }
 
+        public int DarkElixir { get; set; }
+
         public bool AlwaysUnlocked { get; set; }
 
         public string PlayerName { get; set; }
@@ -39,5 +49,27 @@ namespace ClashofClans.Files.Logic
         public int AllianceBadge { get; set; }
 
         public bool SinglePlayer { get; set; }
+
+        public string AllianceUnitType { get; set; }
+
+        public int AllianceUnitLevel { get; set; }
+
+        public int AllianceUnitCount { get; set; }
+
+        public string FixedArmyUnitType { get; set; }
+
+        public int FixedArmyUnitLevel { get; set; }
+
+        public int FixedArmyUnitCount { get; set; }
+
+        public bool FixedArmyUnitAlliance { get; set; }
+
+        public string DeploySteps { get; set; }
+
+        public bool UseFullMapSize { get; set; }
+
+        public string DefendingHero { get; set; }
+
+        public int DefendingHeroLevel { get; set; }
     }
 }

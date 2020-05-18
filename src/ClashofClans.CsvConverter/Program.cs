@@ -29,6 +29,7 @@ namespace ClashofClans.CsvConverter
                 Console.WriteLine("Output Directory was not found so it has been created.");
             }
 
+            Console.Write("Enter name (e.g. Logic): ");
             var name = Console.ReadLine();
 
             if (Directory.GetFiles("CSV Input").Any())

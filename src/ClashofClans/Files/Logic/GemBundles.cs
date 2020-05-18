@@ -20,6 +20,8 @@ namespace ClashofClans.Files.Logic
 
         public string InfoTID { get; set; }
 
+        public string AnimatedTID { get; set; }
+
         public bool Disabled { get; set; }
 
         public bool ExistsApple { get; set; }
@@ -32,15 +34,15 @@ namespace ClashofClans.Files.Logic
 
         public bool ExistsTencent { get; set; }
 
-        public string IconSWF { get; set; }
-
-        public string IconExportName { get; set; }
+        public bool ExistsAmazon { get; set; }
 
         public string ShopItemExportName { get; set; }
 
-        public string ShopItemInfoExportName { get; set; }
+        public string ShopInfoItemExportName { get; set; }
 
         public string ShopItemBG { get; set; }
+
+        public string ShopItemBGColor { get; set; }
 
         public int TownhallLimitMin { get; set; }
 
@@ -49,8 +51,6 @@ namespace ClashofClans.Files.Logic
         public int VillageType { get; set; }
 
         public string Buildings { get; set; }
-
-        public int GemCost { get; set; }
 
         public string BuildingType { get; set; }
 
@@ -84,18 +84,16 @@ namespace ClashofClans.Files.Logic
 
         public string ReplacesBillingPackage { get; set; }
 
-        public string ValueTID { get; set; }
-
         public int ValueForUI { get; set; }
+
+        public int ValueStarsForUI { get; set; }
 
         public int AvailableTimeMinutes { get; set; }
 
-        public int CooldownAfterPurchaseMinutes { get; set; }
-
         public int TimesCanBePurchased { get; set; }
 
-        public int ShopFrontPageCooldownAfterPurchaseMin { get; set; }
-
         public bool HideTimer { get; set; }
+
+        public bool PremiumPass { get; set; }
     }
 }

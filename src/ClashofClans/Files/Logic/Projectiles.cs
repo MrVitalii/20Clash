@@ -36,7 +36,9 @@ namespace ClashofClans.Files.Logic
 
         public string ShadowExportName { get; set; }
 
-        public bool RandomHitPosition { get; set; }
+        public bool RandomHitPositionOnCharacters { get; set; }
+
+        public bool SmallRandomHitPositionOnBuildings { get; set; }
 
         public bool UseRotate { get; set; }
 
@@ -51,6 +53,8 @@ namespace ClashofClans.Files.Logic
         public string HitSpell { get; set; }
 
         public int HitSpellLevel { get; set; }
+
+        public bool HitSpellInheritAffectType { get; set; }
 
         public bool DontTrackTarget { get; set; }
 
@@ -69,5 +73,17 @@ namespace ClashofClans.Files.Logic
         public int TargetPosRandomRadius { get; set; }
 
         public int SlowdownDefencePercent { get; set; }
+
+        public bool UseNormalizeLenghtFix { get; set; }
+
+        public int MaxBounceDistance { get; set; }
+
+        public int StopToTargetTime { get; set; }
+
+        public bool CanBounceOverWall { get; set; }
+
+        public bool SmoothDamage { get; set; }
+
+        public bool StartOffsetFromGunBone { get; set; }
     }
 }

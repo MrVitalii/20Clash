@@ -67,5 +67,7 @@ namespace ClashofClans.Files.Logic
         public int SaverCount { get; set; }
 
         public int VillageGuardInMins { get; set; }
+
+        public int ShieldReductionInHours { get; set; }
     }
 }

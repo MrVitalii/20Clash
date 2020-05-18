@@ -18,6 +18,8 @@ namespace ClashofClans.Files.Logic
 
         public string ParticleEmitter { get; set; }
 
+        public string AltParticleEmitter { get; set; }
+
         public int EmitterDelayMs { get; set; }
 
         public int CameraShake { get; set; }
@@ -56,8 +58,18 @@ namespace ClashofClans.Files.Logic
 
         public int LowEndMaxPitch { get; set; }
 
+        public bool StopSound { get; set; }
+
         public bool Beam { get; set; }
 
         public bool SortInFrontOfParent { get; set; }
+
+        public string AttachLocator { get; set; }
+
+        public int PitchIncrease { get; set; }
+
+        public bool OrientToParent { get; set; }
+
+        public bool OffsetFromGunBone { get; set; }
     }
 }
