@@ -114,7 +114,7 @@ namespace ClashofClans.Logic
             packet.WriteInt(1200);
             packet.WriteInt(60);
 
-            packet.WriteInt(0); // Trophies
+            packet.WriteInt(Home.Trophies); // Trophies
             packet.WriteInt(0); // Builderbase Trophies
 
             packet.WriteInt(0); // Wins 
