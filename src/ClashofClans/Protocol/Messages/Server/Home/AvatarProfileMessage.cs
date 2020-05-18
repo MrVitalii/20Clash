@@ -28,6 +28,6 @@ namespace ClashofClans.Protocol.Messages.Server
 
             Writer.WriteBoolean(false);
             Writer.WriteInt(0);
-        }
+         }
     }
 }

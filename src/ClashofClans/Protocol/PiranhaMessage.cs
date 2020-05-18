@@ -41,6 +41,13 @@ namespace ClashofClans.Protocol
         {
         }
 
+        public void EncodeCryptoBytes()
+        {
+            Writer.WriteShort(-1);
+            Writer.WriteByte(0);
+            Writer.WriteInt(0);
+        }
+
         /// <summary>
         ///     Writes this message to the clients channel
         /// </summary>

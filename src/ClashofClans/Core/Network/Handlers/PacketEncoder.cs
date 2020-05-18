@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using ClashofClans.Protocol;
-using ClashofClans.Utilities.Netty;
 using DotNetty.Buffers;
 using DotNetty.Transport.Channels;
 
@@ -19,13 +18,10 @@ namespace ClashofClans.Core.Network.Handlers
             header.WriteMedium(message.Writer.ReadableBytes);
             header.WriteUnsignedShort(message.Version);
 
+            message.EncodeCryptoBytes();
+
             base.WriteAsync(context, header);
-            base.WriteAsync(context, message.Writer);
-
-            var cb = PooledByteBufferAllocator.Default.Buffer(8);
-            cb.WriteHex("FFFF0000000000");
-
-            return base.WriteAsync(context, cb);
+            return base.WriteAsync(context, message.Writer);
         }
     }
 }
