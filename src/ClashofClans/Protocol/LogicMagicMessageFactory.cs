@@ -20,7 +20,7 @@ namespace ClashofClans.Protocol
                 {10108, typeof(KeepAliveMessage)},
                 //{10113, typeof(SetDeviceTokenMessage)},
                 /*{10905, typeof(NewsSeenMessage)},*/
-                //{14101, typeof(GoHomeMessage)},
+                {10936, typeof(GoHomeMessage)},
                 {11186, typeof(AskForAllianceDataMessage)},
                 {11734, typeof(AskForAvatarProfileMessage)},
                 {12906, typeof(EndClientTurnMessage)},
