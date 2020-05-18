@@ -20,6 +20,8 @@ namespace ClashofClans.Files.Logic
 
         public int TroopDonationLimit { get; set; }
 
+        public int SpellDonationLimit { get; set; }
+
         public int TroopDonationRefund { get; set; }
 
         public int TroopDonationUpgrade { get; set; }
