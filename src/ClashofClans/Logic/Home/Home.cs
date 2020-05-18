@@ -211,6 +211,21 @@ namespace ClashofClans.Logic.Home
         }
 
         /// <summary>
+        ///     Returns true if it was able to remove the amount of medals from the players account
+        /// </summary>
+        /// <param name="amount"></param>
+        /// <returns></returns>
+        public bool UseMedals(int amount)
+        {
+            var medals = Resources.GetById(3000009).Count;
+
+            if (medals - amount < 0) return false;
+
+            Resources.Remove(3000009, amount);
+            return true;
+        }
+
+        /// <summary>
         ///     Returns true if it was able to remove the amount of diamonds from the players account
         /// </summary>
         /// <param name="amount"></param>
@@ -255,6 +270,11 @@ namespace ClashofClans.Logic.Home
                 case "Elixir2":
                 {
                     return UseElixir2(amount);
+                }
+
+                case "Medals":
+                {
+                    return UseMedals(amount);
                 }
             }
 
