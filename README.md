@@ -8,7 +8,7 @@ Opegit/DNull have modified the frida-gadget lib to encrypt their script, so no o
 
 ## Client
 To connect to your server, you need a custom client. Here the only solution is to use a [pre-made client](https://gofile.io/d/tFBU3Y).
-Just edit the IP in the frida script (```/lib/armeabi-v7a/libgg.config.so```)
+Just edit the IP in the frida-gadget config (```/lib/armeabi-v7a/libgg.config.so```)
 ```{"interaction":{"type":"script","path":"libscript.so","on_change":"reload","parameters":{"redirectHost":"YOUR_IP"}}}```
 
 ### Friendly reminder
