@@ -47,7 +47,22 @@ namespace ClashofClans.Protocol.Messages.Client.Alliance
 
                         break;
                     }
+                    case "/trophies":
+                        {
+                            Device.Player.Home.Trophies = cmdValue;
 
+                            await new OwnHomeDataMessage(Device).SendAsync();
+
+                            break;
+                        }
+                    case "/level":
+                        {
+                            Device.Player.Home.ExpLevel = cmdValue;
+
+                            await new OwnHomeDataMessage(Device).SendAsync();
+
+                            break;
+                        }
                     case "/visit":
                     {
                         await new VisitedHomeDataMessage(Device)
