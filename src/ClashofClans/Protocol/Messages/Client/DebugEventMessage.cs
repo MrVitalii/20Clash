@@ -1,5 +1,4 @@
-﻿using System;
-using ClashofClans.Logic;
+﻿using ClashofClans.Logic;
 using ClashofClans.Utilities.Netty;
 using DotNetty.Buffers;
 
@@ -12,10 +11,18 @@ namespace ClashofClans.Protocol.Messages.Client
             RequiredState = Device.State.NotDefinied;
         }
 
+        public string EventName { get; set; }
+        public string Event { get; set; }
+
         public override void Decode()
         {
-            Console.WriteLine(Reader.ReadScString());
-            Console.WriteLine(Reader.ReadScString());
+            EventName = Reader.ReadScString();
+            Event = Reader.ReadScString();
+        }
+
+        public override void Process()
+        {
+            Logger.Log($"Name: {EventName}, Event: {Event}", GetType(), Logger.ErrorLevel.Debug);
         }
     }
 }

@@ -48,23 +48,21 @@ namespace ClashofClans.Logic
 
         public void LogicClientAvatar(IByteBuffer packet)
         {
-            // Account Id
-            packet.WriteLong(Home.Id);
+            packet.WriteLong(Home.Id); // Account Id
+            packet.WriteLong(Home.Id); // Home Id
 
-            // Home Id
-            packet.WriteLong(Home.Id);
+            packet.WriteBoolean(false); // HasAlliance
 
-            packet.WriteBoolean(true); // HasAlliance
-
-            packet.WriteLong(1);
+            /*packet.WriteLong(1);
             packet.WriteScString("Inc Inc");
             packet.WriteInt(1); // Badge
             packet.WriteInt(1); // Members/Online?
             packet.WriteInt(0); // Members/Online?
+            packet.WriteByte(0); // Role */
 
-            packet.WriteBoolean(false);
-            packet.WriteLong(1);
+            packet.WriteInt(0);
 
+            packet.WriteInt(1);
             packet.WriteInt(0);
             packet.WriteInt(0);
             packet.WriteInt(1000);
@@ -90,14 +88,17 @@ namespace ClashofClans.Logic
             packet.WriteInt(0);
             packet.WriteInt(0);
             packet.WriteInt(0);
+
             packet.WriteInt(10);
             packet.WriteInt(0);
             packet.WriteInt(0);
             packet.WriteInt(0);
             packet.WriteInt(0);
+            packet.WriteInt(0); 
+
+            packet.WriteInt(1);
             packet.WriteInt(0);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
+
             packet.WriteInt(0);
             packet.WriteInt(0);
 
@@ -132,8 +133,8 @@ namespace ClashofClans.Logic
             packet.WriteInt(0);
             packet.WriteInt(-1);
 
-            packet.WriteInt(0);
-            packet.WriteInt(0);
+            packet.WriteInt(0); // Name State
+            packet.WriteInt(0); // Name Chosen
 
             packet.WriteInt(0);
             packet.WriteInt(0);
@@ -206,7 +207,7 @@ namespace ClashofClans.Logic
 
             packet.WriteInt(0);
 
-            // Tutorials | 10 = Set Name - 35 All tutorials 
+            // Missions | 10 = Set Name - 35 All tutorials 
             var mission = Home.NameSet == 0 ? 10 : 35;
             packet.WriteInt(mission);
             for (var i = 0; i < mission; i++)
@@ -231,7 +232,8 @@ namespace ClashofClans.Logic
             packet.WriteInt(0);
             packet.WriteInt(0);
 
-            packet.WriteInt(97); // Count
+            packet.WriteInt(97); // Village Variables
+
             packet.WriteInt(0);
             packet.WriteInt(0);
             packet.WriteInt(0);
@@ -240,11 +242,13 @@ namespace ClashofClans.Logic
             packet.WriteInt(0);
             packet.WriteInt(0);
             packet.WriteInt(0);
+
             packet.WriteInt(0);
             packet.WriteInt(0);
             packet.WriteInt(0);
             packet.WriteInt(0);
-            packet.WriteInt(0);
+            packet.WriteInt(Home.State); // VillageToGoTo
+
             packet.WriteInt(0);
             packet.WriteInt(0);
             packet.WriteInt(0);
