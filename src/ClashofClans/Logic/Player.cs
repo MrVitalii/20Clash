@@ -51,14 +51,14 @@ namespace ClashofClans.Logic
             packet.WriteLong(Home.Id); // Account Id
             packet.WriteLong(Home.Id); // Home Id
 
-            packet.WriteBoolean(false); // HasAlliance
+            packet.WriteBoolean(true); // HasAlliance
 
-            /*packet.WriteLong(1);
+            packet.WriteLong(1);
             packet.WriteScString("Inc Inc");
             packet.WriteInt(1); // Badge
-            packet.WriteInt(1); // Members/Online?
-            packet.WriteInt(0); // Members/Online?
-            packet.WriteByte(0); // Role */
+            packet.WriteInt(1); // Members/Online
+            packet.WriteInt(0); // Members/Online
+            packet.WriteByte(0); // Role 
 
             packet.WriteInt(0);
 
