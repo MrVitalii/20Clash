@@ -234,21 +234,64 @@ namespace ClashofClans.Logic
 
             packet.WriteInt(97); // Village Variables
 
-            packet.WriteInt(0);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
+            packet.WriteInt(0); // StarBonusCounter
+            packet.WriteInt(0); // StarBonusCooldown
+            packet.WriteInt(0); // StarBonusTimerEndSubTick
+            packet.WriteInt(0); // StarBonusTimerEndTimestep
+            packet.WriteInt(0); // StarBonusTimesCollected
 
-            packet.WriteInt(0);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
+            packet.WriteInt(0); // ChallengeStarted
+            packet.WriteInt(0); // ChallengeLayoutIsWar
+
+            packet.WriteInt(0); // FriendListLastOpened
+            packet.WriteInt(0); // BeenInArrangedWar
+            packet.WriteInt(0); // FILL_ME
+            packet.WriteInt(0); // AccountBound
+            packet.WriteInt(0); // EventUseTroop
+
             packet.WriteInt(Home.State); // VillageToGoTo
 
+            packet.WriteInt(0); // LootLimitWinCount
+            packet.WriteInt(0); // LootLimitTimerEndSubTick
+            packet.WriteInt(0); // LootLimitTimerEndTimestamp
+            packet.WriteInt(0); // LootLimitCooldown
+
+            packet.WriteInt(0); // Village2BarrackLevel
+            packet.WriteInt(0); // LootLimitFreeSpeedUp
+            packet.WriteInt(1); // SeenBuilderMenu
+
+            packet.WriteInt(0); // MaxArmyTimerEndSubTick
+            packet.WriteInt(0); // MaxArmyTimerEndTimeStamp
+            packet.WriteInt(0); // MaxArmyTimerPausedTicksLeft
+
+            packet.WriteInt(0); // AllianceUnitDeploymentMethod
+            packet.WriteInt(1); // ShowOnlyRelevantTroopRequests
+
+            packet.WriteInt(0); // HeroPotionTimerEndSubTick
+            packet.WriteInt(0); // HeroPotionTimerEndTimeStamp
+            packet.WriteInt(0); // HeroPotionTimerPausedTicksLeft
+
+            packet.WriteInt(0); // TaskEventProgress1
+            packet.WriteInt(0); // TaskEventProgress2
+            packet.WriteInt(0); // TaskEventProgress3
+
+            packet.WriteInt(0); // ClanChatRulesVersion
+            packet.WriteInt(0); // ClanChatRulesVersionTimestamp
+
+            packet.WriteInt(0); // CurrentBattlePassSeason
+            packet.WriteInt(0); // PassPerkTroopTrainingBoost
+            packet.WriteInt(255); // TriggerHeroAbilityOnDeath
+            packet.WriteInt(0); // RejectClanInviteCounter
+
+            packet.WriteInt(0); // PassPerkBuildingBoost
+            packet.WriteInt(0); // FILL_ME_4
+            packet.WriteInt(0); // PassPerkSavingsPayout
+            packet.WriteInt(0); // PassPerkGemDonationCost
+
+            packet.WriteInt(0); // DailyPassTaskProgress1
+            packet.WriteInt(0); // DailyPassTaskProgress2
+            packet.WriteInt(0); // DailyPassTaskProgress3
+
             packet.WriteInt(0);
             packet.WriteInt(0);
             packet.WriteInt(0);
@@ -260,7 +303,6 @@ namespace ClashofClans.Logic
             packet.WriteInt(0);
             packet.WriteInt(0);
             packet.WriteInt(0);
-            packet.WriteInt(1);
             packet.WriteInt(0);
             packet.WriteInt(0);
             packet.WriteInt(0);
@@ -271,7 +313,6 @@ namespace ClashofClans.Logic
             packet.WriteInt(0);
             packet.WriteInt(0);
             packet.WriteInt(0);
-            packet.WriteInt(255);
             packet.WriteInt(0);
             packet.WriteInt(0);
             packet.WriteInt(0);
@@ -281,6 +322,10 @@ namespace ClashofClans.Logic
             packet.WriteInt(0);
             packet.WriteInt(0);
             packet.WriteInt(0);
+
+            packet.WriteInt(0); // PassPerkResearchBoost
+
+            packet.WriteInt(0); 
             packet.WriteInt(0);
             packet.WriteInt(0);
             packet.WriteInt(0);
@@ -300,39 +345,9 @@ namespace ClashofClans.Logic
             packet.WriteInt(0);
             packet.WriteInt(0);
             packet.WriteInt(0);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
-            packet.WriteInt(1);
-            packet.WriteInt(20);
+
+            packet.WriteInt(1); // DeployStepState
+            packet.WriteInt(20); // MaxLayoutShareRequestsPerHour
 
             packet.WriteInt(0);
             packet.WriteInt(0);
