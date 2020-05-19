@@ -168,7 +168,7 @@ namespace ClashofClans.Logic
             packet.WriteInt(0); // Home Troop Levels
             packet.WriteInt(0); // Spell Levels
 
-            packet.WriteInt(4); // Hero Levels
+            packet.WriteInt(5); // Hero Levels
             packet.WriteInt(28000000);
             packet.WriteInt(44);
             packet.WriteInt(28000001);
@@ -177,8 +177,10 @@ namespace ClashofClans.Logic
             packet.WriteInt(19);
             packet.WriteInt(28000003);
             packet.WriteInt(29);
+            packet.WriteInt(28000004);
+            packet.WriteInt(19);
 
-            packet.WriteInt(4); // Hero Healths
+            packet.WriteInt(5); // Hero Healths
             packet.WriteInt(28000000);
             packet.WriteInt(0);
             packet.WriteInt(28000001);
@@ -187,8 +189,10 @@ namespace ClashofClans.Logic
             packet.WriteInt(0);
             packet.WriteInt(28000003);
             packet.WriteInt(0);
+            packet.WriteInt(28000004);
+            packet.WriteInt(0);
 
-            packet.WriteInt(4); // Hero States
+            packet.WriteInt(5); // Hero States
             packet.WriteInt(28000000);
             packet.WriteInt(3);
             packet.WriteInt(28000001);
@@ -197,6 +201,8 @@ namespace ClashofClans.Logic
             packet.WriteInt(3);
             packet.WriteInt(28000003);
             packet.WriteInt(2);
+            packet.WriteInt(28000004);
+            packet.WriteInt(3);
 
             // Clan Units
             packet.WriteInt(0);
