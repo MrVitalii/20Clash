@@ -5,7 +5,7 @@ namespace ClashofClans.Utilities.Compression.ZLib
 {
     public class ZlibStream : Stream
     {
-        internal ZlibBaseStream _baseStream;
+        internal ZlibBaseStream BaseStream;
         private bool _disposed;
 
         public ZlibStream(Stream stream, CompressionMode mode)
@@ -25,23 +25,23 @@ namespace ClashofClans.Utilities.Compression.ZLib
 
         public ZlibStream(Stream stream, CompressionMode mode, CompressionLevel level, bool leaveOpen)
         {
-            _baseStream = new ZlibBaseStream(stream, mode, level, ZlibStreamFlavor.Zlib, leaveOpen);
+            BaseStream = new ZlibBaseStream(stream, mode, level, ZlibStreamFlavor.Zlib, leaveOpen);
         }
 
         public int BufferSize
         {
-            get => _baseStream.BufferSize;
+            get => BaseStream.BufferSize;
             set
             {
                 if (_disposed)
                     throw new ObjectDisposedException("ZlibStream");
-                if (_baseStream._workingBuffer != null)
+                if (BaseStream._workingBuffer != null)
                     throw new ZlibException("The working buffer is already set.");
                 if (value < ZlibConstants.WorkingBufferSizeMin)
                     throw new ZlibException(
                         $"Don't be silly. {value} bytes?? Use a bigger buffer, at least {ZlibConstants.WorkingBufferSizeMin}.");
 
-                _baseStream.BufferSize = value;
+                BaseStream.BufferSize = value;
             }
         }
 
@@ -52,7 +52,7 @@ namespace ClashofClans.Utilities.Compression.ZLib
                 if (_disposed)
                     throw new ObjectDisposedException("ZlibStream");
 
-                return _baseStream.Stream.CanRead;
+                return BaseStream.Stream.CanRead;
             }
         }
 
@@ -65,19 +65,19 @@ namespace ClashofClans.Utilities.Compression.ZLib
                 if (_disposed)
                     throw new ObjectDisposedException("ZlibStream");
 
-                return _baseStream.Stream.CanWrite;
+                return BaseStream.Stream.CanWrite;
             }
         }
 
         public virtual FlushType FlushMode
         {
-            get => _baseStream.FlushMode;
+            get => BaseStream.FlushMode;
             set
             {
                 if (_disposed)
                     throw new ObjectDisposedException("ZlibStream");
 
-                _baseStream.FlushMode = value;
+                BaseStream.FlushMode = value;
             }
         }
 
@@ -87,12 +87,12 @@ namespace ClashofClans.Utilities.Compression.ZLib
         {
             get
             {
-                switch (_baseStream._streamMode)
+                switch (BaseStream._streamMode)
                 {
                     case ZlibBaseStream.StreamMode.Writer:
-                        return _baseStream.Z.TotalBytesOut;
+                        return BaseStream.Z.TotalBytesOut;
                     case ZlibBaseStream.StreamMode.Reader:
-                        return _baseStream.Z.TotalBytesIn;
+                        return BaseStream.Z.TotalBytesIn;
                     default:
                         return 0;
                 }
@@ -101,9 +101,9 @@ namespace ClashofClans.Utilities.Compression.ZLib
             set => throw new NotSupportedException();
         }
 
-        public virtual long TotalIn => _baseStream.Z.TotalBytesIn;
+        public virtual long TotalIn => BaseStream.Z.TotalBytesIn;
 
-        public virtual long TotalOut => _baseStream.Z.TotalBytesOut;
+        public virtual long TotalOut => BaseStream.Z.TotalBytesOut;
 
         protected override void Dispose(bool disposing)
         {
@@ -112,7 +112,7 @@ namespace ClashofClans.Utilities.Compression.ZLib
                 if (_disposed) return;
 
                 if (disposing)
-                    _baseStream?.Close();
+                    BaseStream?.Close();
                 _disposed = true;
             }
             finally
@@ -151,7 +151,7 @@ namespace ClashofClans.Utilities.Compression.ZLib
                 Stream decompressor =
                     new ZlibStream(input, CompressionMode.Decompress);
 
-                return ZlibBaseStream.UncompressBuffer(compressed, decompressor);
+                return ZlibBaseStream.UncompressBuffer(decompressor);
             }
         }
 
@@ -162,7 +162,7 @@ namespace ClashofClans.Utilities.Compression.ZLib
                 Stream decompressor =
                     new ZlibStream(input, CompressionMode.Decompress);
 
-                return ZlibBaseStream.UncompressString(compressed, decompressor);
+                return ZlibBaseStream.UncompressString(decompressor);
             }
         }
 
@@ -171,7 +171,7 @@ namespace ClashofClans.Utilities.Compression.ZLib
             if (_disposed)
                 throw new ObjectDisposedException("ZlibStream");
 
-            _baseStream.Flush();
+            BaseStream.Flush();
         }
 
         public override int Read(byte[] buffer, int offset, int count)
@@ -179,7 +179,7 @@ namespace ClashofClans.Utilities.Compression.ZLib
             if (_disposed)
                 throw new ObjectDisposedException("ZlibStream");
 
-            return _baseStream.Read(buffer, offset, count);
+            return BaseStream.Read(buffer, offset, count);
         }
 
         public override long Seek(long offset, SeekOrigin origin)
@@ -198,7 +198,7 @@ namespace ClashofClans.Utilities.Compression.ZLib
             if (_disposed)
                 throw new ObjectDisposedException("ZlibStream");
 
-            _baseStream.Write(buffer, offset, count);
+            BaseStream.Write(buffer, offset, count);
         }
     }
 }

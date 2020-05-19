@@ -150,7 +150,7 @@ namespace ClashofClans.Utilities.Compression.ZLib
 
         internal bool WantRfc1950HeaderBytes { get; set; } = true;
 
-        private void _InitializeLazyMatch()
+        private void InitializeLazyMatch()
         {
             WindowSize = 2 * WSize;
 
@@ -1069,7 +1069,7 @@ namespace ClashofClans.Utilities.Compression.ZLib
             LastFlush = (int) FlushType.None;
 
             InitializeTreeData();
-            _InitializeLazyMatch();
+            InitializeLazyMatch();
         }
 
         internal int End()

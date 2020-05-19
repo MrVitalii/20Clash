@@ -117,7 +117,7 @@ namespace ClashofClans.Utilities.Compression.ZLib
                 Z.AvailableBytesOut = _workingBuffer.Length;
                 var rc = WantCompress
                     ? Z.Deflate(FlushMode)
-                    : Z.Inflate(FlushMode);
+                    : Z.Inflate();
                 if (rc != ZlibConstants.ZOk && rc != ZlibConstants.ZStreamEnd)
                     throw new ZlibException((WantCompress ? "de" : "in") + "flating: " + Z.Message);
 
@@ -147,7 +147,7 @@ namespace ClashofClans.Utilities.Compression.ZLib
                         Z.AvailableBytesOut = _workingBuffer.Length;
                         var rc = WantCompress
                             ? Z.Deflate(FlushType.Finish)
-                            : Z.Inflate(FlushType.Finish);
+                            : Z.Inflate();
 
                         if (rc != ZlibConstants.ZStreamEnd && rc != ZlibConstants.ZOk)
                         {
@@ -396,7 +396,7 @@ namespace ClashofClans.Utilities.Compression.ZLib
 
                 rc = WantCompress
                     ? Z.Deflate(FlushMode)
-                    : Z.Inflate(FlushMode);
+                    : Z.Inflate();
 
                 if (_nomoreinput && rc == ZlibConstants.ZBufError)
                     return 0;
@@ -442,7 +442,7 @@ namespace ClashofClans.Utilities.Compression.ZLib
             }
         }
 
-        public static string UncompressString(byte[] compressed, Stream decompressor)
+        public static string UncompressString(Stream decompressor)
         {
             var working = new byte[1024];
             var encoding = Encoding.UTF8;
@@ -460,7 +460,7 @@ namespace ClashofClans.Utilities.Compression.ZLib
             }
         }
 
-        public static byte[] UncompressBuffer(byte[] compressed, Stream decompressor)
+        public static byte[] UncompressBuffer(Stream decompressor)
         {
             var working = new byte[1024];
             using (var output = new MemoryStream())

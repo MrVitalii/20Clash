@@ -14,13 +14,8 @@ namespace ClashofClans.Utilities.Compression.ZLib
 
         private const int ZBufError = -5;
         private const int ZDataError = -3;
-        private const int ZErrno = -1;
         private const int ZMemError = -4;
-        private const int ZNeedDict = 2;
         private const int ZOk = 0;
-        private const int ZStreamEnd = 1;
-        private const int ZStreamError = -2;
-        private const int ZVersionError = -6;
 
         internal static readonly int[] Cpdext =
         {

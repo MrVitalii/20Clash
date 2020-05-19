@@ -10,7 +10,7 @@ namespace ClashofClans.Utilities.Compression.ZLib
 #endif
     public sealed class ZlibCodec
     {
-        internal uint _Adler32;
+        public uint _Adler32;
 
         public int AvailableBytesIn;
         public int AvailableBytesOut;
@@ -96,12 +96,12 @@ namespace ClashofClans.Utilities.Compression.ZLib
             return Istate.Initialize(this, windowBits);
         }
 
-        public int Inflate(FlushType flush)
+        public int Inflate()
         {
             if (Istate == null)
                 throw new ZlibException("No Inflate State!");
 
-            return Istate.Inflate(flush);
+            return Istate.Inflate();
         }
 
         public int EndInflate()
@@ -124,36 +124,36 @@ namespace ClashofClans.Utilities.Compression.ZLib
 
         public int InitializeDeflate()
         {
-            return _InternalInitializeDeflate(true);
+            return InternalInitializeDeflate(true);
         }
 
         public int InitializeDeflate(CompressionLevel level)
         {
             CompressLevel = level;
-            return _InternalInitializeDeflate(true);
+            return InternalInitializeDeflate(true);
         }
 
         public int InitializeDeflate(CompressionLevel level, bool wantRfc1950Header)
         {
             CompressLevel = level;
-            return _InternalInitializeDeflate(wantRfc1950Header);
+            return InternalInitializeDeflate(wantRfc1950Header);
         }
 
         public int InitializeDeflate(CompressionLevel level, int bits)
         {
             CompressLevel = level;
             WindowBits = bits;
-            return _InternalInitializeDeflate(true);
+            return InternalInitializeDeflate(true);
         }
 
         public int InitializeDeflate(CompressionLevel level, int bits, bool wantRfc1950Header)
         {
             CompressLevel = level;
             WindowBits = bits;
-            return _InternalInitializeDeflate(wantRfc1950Header);
+            return InternalInitializeDeflate(wantRfc1950Header);
         }
 
-        private int _InternalInitializeDeflate(bool wantRfc1950Header)
+        private int InternalInitializeDeflate(bool wantRfc1950Header)
         {
             if (Istate != null)
                 throw new ZlibException("You may not call InitializeDeflate() after calling InitializeInflate().");

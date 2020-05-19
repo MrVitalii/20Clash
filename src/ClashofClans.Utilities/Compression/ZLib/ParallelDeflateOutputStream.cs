@@ -18,7 +18,6 @@ namespace ClashofClans.Utilities.Compression.ZLib
 
         public WorkItem(int size,
             CompressionLevel compressLevel,
-            CompressionStrategy strategy,
             int ix)
         {
             Buffer = new byte[size];
@@ -38,22 +37,10 @@ namespace ClashofClans.Utilities.Compression.ZLib
         private const int BufferPairsPerCore = 4;
         private readonly CompressionLevel _compressLevel;
 
-        private readonly TraceBits _desiredTrace =
-            TraceBits.Session |
-            TraceBits.Compress |
-            TraceBits.WriteTake |
-            TraceBits.WriteEnter |
-            TraceBits.EmitEnter |
-            TraceBits.EmitDone |
-            TraceBits.EmitLock |
-            TraceBits.EmitSkip |
-            TraceBits.EmitBegin;
-
         private readonly object _eLock = new object();
         private readonly object _latestLock = new object();
         private readonly bool _leaveOpen;
 
-        private readonly object _outputLock = new object();
         private int _bufferSize = IoBufferSizeDefault;
         private int _currentlyFilling;
         private bool _emitting;
@@ -85,11 +72,6 @@ namespace ClashofClans.Utilities.Compression.ZLib
         }
 
         public ParallelDeflateOutputStream(Stream stream, bool leaveOpen)
-            : this(stream, CompressionLevel.Default, CompressionStrategy.Default, leaveOpen)
-        {
-        }
-
-        public ParallelDeflateOutputStream(Stream stream, CompressionLevel level, bool leaveOpen)
             : this(stream, CompressionLevel.Default, CompressionStrategy.Default, leaveOpen)
         {
         }
@@ -161,7 +143,7 @@ namespace ClashofClans.Utilities.Compression.ZLib
             nTasks = Math.Min(nTasks, _maxBufferPairs);
             for (var i = 0; i < nTasks; i++)
             {
-                _pool.Add(new WorkItem(_bufferSize, _compressLevel, Strategy, i));
+                _pool.Add(new WorkItem(_bufferSize, _compressLevel, i));
                 _toFill.Enqueue(i);
             }
 

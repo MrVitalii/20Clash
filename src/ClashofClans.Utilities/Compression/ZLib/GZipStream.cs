@@ -308,7 +308,7 @@ namespace ClashofClans.Utilities.Compression.ZLib
             using (var input = new MemoryStream(compressed))
             {
                 Stream decompressor = new GZipStream(input, CompressionMode.Decompress);
-                return ZlibBaseStream.UncompressString(compressed, decompressor);
+                return ZlibBaseStream.UncompressString(decompressor);
             }
         }
 
@@ -319,7 +319,7 @@ namespace ClashofClans.Utilities.Compression.ZLib
                 Stream decompressor =
                     new GZipStream(input, CompressionMode.Decompress);
 
-                return ZlibBaseStream.UncompressBuffer(compressed, decompressor);
+                return ZlibBaseStream.UncompressBuffer(decompressor);
             }
         }
     }

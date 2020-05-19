@@ -165,7 +165,7 @@ namespace ClashofClans.Utilities.Compression.ZLib
                 Stream decompressor =
                     new DeflateStream(input, CompressionMode.Decompress);
 
-                return ZlibBaseStream.UncompressBuffer(compressed, decompressor);
+                return ZlibBaseStream.UncompressBuffer(decompressor);
             }
         }
 
@@ -176,7 +176,7 @@ namespace ClashofClans.Utilities.Compression.ZLib
                 Stream decompressor =
                     new DeflateStream(input, CompressionMode.Decompress);
 
-                return ZlibBaseStream.UncompressString(compressed, decompressor);
+                return ZlibBaseStream.UncompressString(decompressor);
             }
         }
 

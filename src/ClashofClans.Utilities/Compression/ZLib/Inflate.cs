@@ -15,39 +15,39 @@ namespace ClashofClans.Utilities.Compression.ZLib
 
     internal sealed class InflateBlocks
     {
-        private const int MANY = 1440;
+        private const int Many = 1440;
 
-        internal static readonly int[] border = {16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15};
+        internal static readonly int[] Border = {16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15};
+        private InflateBlockMode _mode;
+        internal int[] Bb = new int[1];
+        internal int Bitb;
+        internal int Bitk;
+        internal int[] Blens;
+        internal uint Check;
+        internal object Checkfn;
 
-        internal ZlibCodec _codec;
-        internal int[] bb = new int[1];
-        internal int bitb;
-        internal int bitk;
-        internal int[] blens;
-        internal uint check;
-        internal object checkfn;
-        internal InflateCodes codes = new InflateCodes();
-        internal int end;
-        internal int[] hufts;
-        internal int index;
-        internal InfTree inftree = new InfTree();
-        internal int last;
-        internal int left;
-        private InflateBlockMode mode;
-        internal int readAt;
-        internal int table;
-        internal int[] tb = new int[1];
-        internal byte[] window;
-        internal int writeAt;
+        internal ZlibCodec Codec;
+        internal InflateCodes Codes = new InflateCodes();
+        internal int End;
+        internal int[] Hufts;
+        internal int Index;
+        internal InfTree Inftree = new InfTree();
+        internal int Last;
+        internal int Left;
+        internal int ReadAt;
+        internal int Table;
+        internal int[] Tb = new int[1];
+        internal byte[] Window;
+        internal int WriteAt;
 
         internal InflateBlocks(ZlibCodec codec, object checkfn, int w)
         {
-            _codec = codec;
-            hufts = new int[MANY * 3];
-            window = new byte[w];
-            end = w;
-            this.checkfn = checkfn;
-            mode = InflateBlockMode.TYPE;
+            Codec = codec;
+            Hufts = new int[Many * 3];
+            Window = new byte[w];
+            End = w;
+            Checkfn = checkfn;
+            _mode = InflateBlockMode.TYPE;
             Reset();
         }
 
@@ -57,9 +57,9 @@ namespace ClashofClans.Utilities.Compression.ZLib
             {
                 int nBytes;
                 if (pass == 0)
-                    nBytes = (readAt <= writeAt ? writeAt : end) - readAt;
+                    nBytes = (ReadAt <= WriteAt ? WriteAt : End) - ReadAt;
                 else
-                    nBytes = writeAt - readAt;
+                    nBytes = WriteAt - ReadAt;
 
                 if (nBytes == 0)
                 {
@@ -68,27 +68,27 @@ namespace ClashofClans.Utilities.Compression.ZLib
                     return r;
                 }
 
-                if (nBytes > _codec.AvailableBytesOut)
-                    nBytes = _codec.AvailableBytesOut;
+                if (nBytes > Codec.AvailableBytesOut)
+                    nBytes = Codec.AvailableBytesOut;
 
                 if (nBytes != 0 && r == ZlibConstants.ZBufError)
                     r = ZlibConstants.ZOk;
 
-                _codec.AvailableBytesOut -= nBytes;
-                _codec.TotalBytesOut += nBytes;
+                Codec.AvailableBytesOut -= nBytes;
+                Codec.TotalBytesOut += nBytes;
 
-                if (checkfn != null)
-                    _codec._Adler32 = check = Adler.Adler32(check, window, readAt, nBytes);
+                if (Checkfn != null)
+                    Codec._Adler32 = Check = Adler.Adler32(Check, Window, ReadAt, nBytes);
 
-                Array.Copy(window, readAt, _codec.OutputBuffer, _codec.NextOut, nBytes);
-                _codec.NextOut += nBytes;
-                readAt += nBytes;
+                Array.Copy(Window, ReadAt, Codec.OutputBuffer, Codec.NextOut, nBytes);
+                Codec.NextOut += nBytes;
+                ReadAt += nBytes;
 
-                if (readAt == end && pass == 0)
+                if (ReadAt == End && pass == 0)
                 {
-                    readAt = 0;
-                    if (writeAt == end)
-                        writeAt = 0;
+                    ReadAt = 0;
+                    if (WriteAt == End)
+                        WriteAt = 0;
                 }
                 else
                 {
@@ -102,24 +102,24 @@ namespace ClashofClans.Utilities.Compression.ZLib
         internal void Free()
         {
             Reset();
-            window = null;
-            hufts = null;
+            Window = null;
+            Hufts = null;
         }
 
         internal int Process(int r)
         {
             int t;
 
-            var p = _codec.NextIn;
-            var n = _codec.AvailableBytesIn;
-            var b = bitb;
-            var k = bitk;
+            var p = Codec.NextIn;
+            var n = Codec.AvailableBytesIn;
+            var b = Bitb;
+            var k = Bitk;
 
-            var q = writeAt;
-            var m = q < readAt ? readAt - q - 1 : end - q;
+            var q = WriteAt;
+            var m = q < ReadAt ? ReadAt - q - 1 : End - q;
 
             while (true)
-                switch (mode)
+                switch (_mode)
                 {
                     case InflateBlockMode.TYPE:
 
@@ -131,22 +131,22 @@ namespace ClashofClans.Utilities.Compression.ZLib
                             }
                             else
                             {
-                                bitb = b;
-                                bitk = k;
-                                _codec.AvailableBytesIn = n;
-                                _codec.TotalBytesIn += p - _codec.NextIn;
-                                _codec.NextIn = p;
-                                writeAt = q;
+                                Bitb = b;
+                                Bitk = k;
+                                Codec.AvailableBytesIn = n;
+                                Codec.TotalBytesIn += p - Codec.NextIn;
+                                Codec.NextIn = p;
+                                WriteAt = q;
                                 return Flush(r);
                             }
 
                             n--;
-                            b |= (_codec.InputBuffer[p++] & 0xff) << k;
+                            b |= (Codec.InputBuffer[p++] & 0xff) << k;
                             k += 8;
                         }
 
                         t = b & 7;
-                        last = t & 1;
+                        Last = t & 1;
 
                         switch ((uint) t >> 1)
                         {
@@ -156,7 +156,7 @@ namespace ClashofClans.Utilities.Compression.ZLib
                                 t = k & 7;
                                 b >>= t;
                                 k -= t;
-                                mode = InflateBlockMode.LENS;
+                                _mode = InflateBlockMode.LENS;
                                 break;
 
                             case 1:
@@ -164,31 +164,31 @@ namespace ClashofClans.Utilities.Compression.ZLib
                                 var bd = new int[1];
                                 var tl = new int[1][];
                                 var td = new int[1][];
-                                InfTree.Inflate_trees_fixed(bl, bd, tl, td, _codec);
-                                codes.Init(bl[0], bd[0], tl[0], 0, td[0], 0);
+                                InfTree.Inflate_trees_fixed(bl, bd, tl, td, Codec);
+                                Codes.Init(bl[0], bd[0], tl[0], 0, td[0], 0);
                                 b >>= 3;
                                 k -= 3;
-                                mode = InflateBlockMode.CODES;
+                                _mode = InflateBlockMode.CODES;
                                 break;
 
                             case 2:
                                 b >>= 3;
                                 k -= 3;
-                                mode = InflateBlockMode.TABLE;
+                                _mode = InflateBlockMode.TABLE;
                                 break;
 
                             case 3:
                                 b >>= 3;
                                 k -= 3;
-                                mode = InflateBlockMode.BAD;
-                                _codec.Message = "invalid block type";
+                                _mode = InflateBlockMode.BAD;
+                                Codec.Message = "invalid block type";
                                 r = ZlibConstants.ZDataError;
-                                bitb = b;
-                                bitk = k;
-                                _codec.AvailableBytesIn = n;
-                                _codec.TotalBytesIn += p - _codec.NextIn;
-                                _codec.NextIn = p;
-                                writeAt = q;
+                                Bitb = b;
+                                Bitk = k;
+                                Codec.AvailableBytesIn = n;
+                                Codec.TotalBytesIn += p - Codec.NextIn;
+                                Codec.NextIn = p;
+                                WriteAt = q;
                                 return Flush(r);
                         }
 
@@ -204,41 +204,41 @@ namespace ClashofClans.Utilities.Compression.ZLib
                             }
                             else
                             {
-                                bitb = b;
-                                bitk = k;
-                                _codec.AvailableBytesIn = n;
-                                _codec.TotalBytesIn += p - _codec.NextIn;
-                                _codec.NextIn = p;
-                                writeAt = q;
+                                Bitb = b;
+                                Bitk = k;
+                                Codec.AvailableBytesIn = n;
+                                Codec.TotalBytesIn += p - Codec.NextIn;
+                                Codec.NextIn = p;
+                                WriteAt = q;
                                 return Flush(r);
                             }
 
                             ;
                             n--;
-                            b |= (_codec.InputBuffer[p++] & 0xff) << k;
+                            b |= (Codec.InputBuffer[p++] & 0xff) << k;
                             k += 8;
                         }
 
                         if (((~b >> 16) & 0xffff) != (b & 0xffff))
                         {
-                            mode = InflateBlockMode.BAD;
-                            _codec.Message = "invalid stored block lengths";
+                            _mode = InflateBlockMode.BAD;
+                            Codec.Message = "invalid stored block lengths";
                             r = ZlibConstants.ZDataError;
 
-                            bitb = b;
-                            bitk = k;
-                            _codec.AvailableBytesIn = n;
-                            _codec.TotalBytesIn += p - _codec.NextIn;
-                            _codec.NextIn = p;
-                            writeAt = q;
+                            Bitb = b;
+                            Bitk = k;
+                            Codec.AvailableBytesIn = n;
+                            Codec.TotalBytesIn += p - Codec.NextIn;
+                            Codec.NextIn = p;
+                            WriteAt = q;
                             return Flush(r);
                         }
 
-                        left = b & 0xffff;
+                        Left = b & 0xffff;
                         b = k = 0;
-                        mode = left != 0
+                        _mode = Left != 0
                             ? InflateBlockMode.STORED
-                            : last != 0
+                            : Last != 0
                                 ? InflateBlockMode.DRY
                                 : InflateBlockMode.TYPE;
                         break;
@@ -246,43 +246,43 @@ namespace ClashofClans.Utilities.Compression.ZLib
                     case InflateBlockMode.STORED:
                         if (n == 0)
                         {
-                            bitb = b;
-                            bitk = k;
-                            _codec.AvailableBytesIn = n;
-                            _codec.TotalBytesIn += p - _codec.NextIn;
-                            _codec.NextIn = p;
-                            writeAt = q;
+                            Bitb = b;
+                            Bitk = k;
+                            Codec.AvailableBytesIn = n;
+                            Codec.TotalBytesIn += p - Codec.NextIn;
+                            Codec.NextIn = p;
+                            WriteAt = q;
                             return Flush(r);
                         }
 
                         if (m == 0)
                         {
-                            if (q == end && readAt != 0)
+                            if (q == End && ReadAt != 0)
                             {
                                 q = 0;
-                                m = q < readAt ? readAt - q - 1 : end - q;
+                                m = q < ReadAt ? ReadAt - q - 1 : End - q;
                             }
 
                             if (m == 0)
                             {
-                                writeAt = q;
+                                WriteAt = q;
                                 r = Flush(r);
-                                q = writeAt;
-                                m = q < readAt ? readAt - q - 1 : end - q;
-                                if (q == end && readAt != 0)
+                                q = WriteAt;
+                                m = q < ReadAt ? ReadAt - q - 1 : End - q;
+                                if (q == End && ReadAt != 0)
                                 {
                                     q = 0;
-                                    m = q < readAt ? readAt - q - 1 : end - q;
+                                    m = q < ReadAt ? ReadAt - q - 1 : End - q;
                                 }
 
                                 if (m == 0)
                                 {
-                                    bitb = b;
-                                    bitk = k;
-                                    _codec.AvailableBytesIn = n;
-                                    _codec.TotalBytesIn += p - _codec.NextIn;
-                                    _codec.NextIn = p;
-                                    writeAt = q;
+                                    Bitb = b;
+                                    Bitk = k;
+                                    Codec.AvailableBytesIn = n;
+                                    Codec.TotalBytesIn += p - Codec.NextIn;
+                                    Codec.NextIn = p;
+                                    WriteAt = q;
                                     return Flush(r);
                                 }
                             }
@@ -290,20 +290,20 @@ namespace ClashofClans.Utilities.Compression.ZLib
 
                         r = ZlibConstants.ZOk;
 
-                        t = left;
+                        t = Left;
                         if (t > n)
                             t = n;
                         if (t > m)
                             t = m;
-                        Array.Copy(_codec.InputBuffer, p, window, q, t);
+                        Array.Copy(Codec.InputBuffer, p, Window, q, t);
                         p += t;
                         n -= t;
                         q += t;
                         m -= t;
-                        if ((left -= t) != 0)
+                        if ((Left -= t) != 0)
                             break;
 
-                        mode = last != 0 ? InflateBlockMode.DRY : InflateBlockMode.TYPE;
+                        _mode = Last != 0 ? InflateBlockMode.DRY : InflateBlockMode.TYPE;
                         break;
 
                     case InflateBlockMode.TABLE:
@@ -316,50 +316,50 @@ namespace ClashofClans.Utilities.Compression.ZLib
                             }
                             else
                             {
-                                bitb = b;
-                                bitk = k;
-                                _codec.AvailableBytesIn = n;
-                                _codec.TotalBytesIn += p - _codec.NextIn;
-                                _codec.NextIn = p;
-                                writeAt = q;
+                                Bitb = b;
+                                Bitk = k;
+                                Codec.AvailableBytesIn = n;
+                                Codec.TotalBytesIn += p - Codec.NextIn;
+                                Codec.NextIn = p;
+                                WriteAt = q;
                                 return Flush(r);
                             }
 
                             n--;
-                            b |= (_codec.InputBuffer[p++] & 0xff) << k;
+                            b |= (Codec.InputBuffer[p++] & 0xff) << k;
                             k += 8;
                         }
 
-                        table = t = b & 0x3fff;
+                        Table = t = b & 0x3fff;
                         if ((t & 0x1f) > 29 || ((t >> 5) & 0x1f) > 29)
                         {
-                            mode = InflateBlockMode.BAD;
-                            _codec.Message = "too many length or distance symbols";
+                            _mode = InflateBlockMode.BAD;
+                            Codec.Message = "too many length or distance symbols";
                             r = ZlibConstants.ZDataError;
 
-                            bitb = b;
-                            bitk = k;
-                            _codec.AvailableBytesIn = n;
-                            _codec.TotalBytesIn += p - _codec.NextIn;
-                            _codec.NextIn = p;
-                            writeAt = q;
+                            Bitb = b;
+                            Bitk = k;
+                            Codec.AvailableBytesIn = n;
+                            Codec.TotalBytesIn += p - Codec.NextIn;
+                            Codec.NextIn = p;
+                            WriteAt = q;
                             return Flush(r);
                         }
 
                         t = 258 + (t & 0x1f) + ((t >> 5) & 0x1f);
-                        if (blens == null || blens.Length < t) blens = new int[t];
+                        if (Blens == null || Blens.Length < t) Blens = new int[t];
                         else
-                            Array.Clear(blens, 0, t);
+                            Array.Clear(Blens, 0, t);
 
                         b >>= 14;
                         k -= 14;
 
-                        index = 0;
-                        mode = InflateBlockMode.BTREE;
+                        Index = 0;
+                        _mode = InflateBlockMode.BTREE;
                         goto case InflateBlockMode.BTREE;
 
                     case InflateBlockMode.BTREE:
-                        while (index < 4 + (table >> 10))
+                        while (Index < 4 + (Table >> 10))
                         {
                             while (k < 3)
                             {
@@ -369,59 +369,59 @@ namespace ClashofClans.Utilities.Compression.ZLib
                                 }
                                 else
                                 {
-                                    bitb = b;
-                                    bitk = k;
-                                    _codec.AvailableBytesIn = n;
-                                    _codec.TotalBytesIn += p - _codec.NextIn;
-                                    _codec.NextIn = p;
-                                    writeAt = q;
+                                    Bitb = b;
+                                    Bitk = k;
+                                    Codec.AvailableBytesIn = n;
+                                    Codec.TotalBytesIn += p - Codec.NextIn;
+                                    Codec.NextIn = p;
+                                    WriteAt = q;
                                     return Flush(r);
                                 }
 
                                 n--;
-                                b |= (_codec.InputBuffer[p++] & 0xff) << k;
+                                b |= (Codec.InputBuffer[p++] & 0xff) << k;
                                 k += 8;
                             }
 
-                            blens[border[index++]] = b & 7;
+                            Blens[Border[Index++]] = b & 7;
 
                             b >>= 3;
                             k -= 3;
                         }
 
-                        while (index < 19) blens[border[index++]] = 0;
+                        while (Index < 19) Blens[Border[Index++]] = 0;
 
-                        bb[0] = 7;
-                        t = inftree.Inflate_trees_bits(blens, bb, tb, hufts, _codec);
+                        Bb[0] = 7;
+                        t = Inftree.Inflate_trees_bits(Blens, Bb, Tb, Hufts, Codec);
                         if (t != ZlibConstants.ZOk)
                         {
                             r = t;
                             if (r == ZlibConstants.ZDataError)
                             {
-                                blens = null;
-                                mode = InflateBlockMode.BAD;
+                                Blens = null;
+                                _mode = InflateBlockMode.BAD;
                             }
 
-                            bitb = b;
-                            bitk = k;
-                            _codec.AvailableBytesIn = n;
-                            _codec.TotalBytesIn += p - _codec.NextIn;
-                            _codec.NextIn = p;
-                            writeAt = q;
+                            Bitb = b;
+                            Bitk = k;
+                            Codec.AvailableBytesIn = n;
+                            Codec.TotalBytesIn += p - Codec.NextIn;
+                            Codec.NextIn = p;
+                            WriteAt = q;
                             return Flush(r);
                         }
 
-                        index = 0;
-                        mode = InflateBlockMode.DTREE;
+                        Index = 0;
+                        _mode = InflateBlockMode.DTREE;
                         goto case InflateBlockMode.DTREE;
 
                     case InflateBlockMode.DTREE:
                         while (true)
                         {
-                            t = table;
-                            if (!(index < 258 + (t & 0x1f) + ((t >> 5) & 0x1f))) break;
+                            t = Table;
+                            if (!(Index < 258 + (t & 0x1f) + ((t >> 5) & 0x1f))) break;
 
-                            t = bb[0];
+                            t = Bb[0];
 
                             while (k < t)
                             {
@@ -431,28 +431,28 @@ namespace ClashofClans.Utilities.Compression.ZLib
                                 }
                                 else
                                 {
-                                    bitb = b;
-                                    bitk = k;
-                                    _codec.AvailableBytesIn = n;
-                                    _codec.TotalBytesIn += p - _codec.NextIn;
-                                    _codec.NextIn = p;
-                                    writeAt = q;
+                                    Bitb = b;
+                                    Bitk = k;
+                                    Codec.AvailableBytesIn = n;
+                                    Codec.TotalBytesIn += p - Codec.NextIn;
+                                    Codec.NextIn = p;
+                                    WriteAt = q;
                                     return Flush(r);
                                 }
 
                                 n--;
-                                b |= (_codec.InputBuffer[p++] & 0xff) << k;
+                                b |= (Codec.InputBuffer[p++] & 0xff) << k;
                                 k += 8;
                             }
 
-                            t = hufts[(tb[0] + (b & InternalInflateConstants.InflateMask[t])) * 3 + 1];
-                            var c = hufts[(tb[0] + (b & InternalInflateConstants.InflateMask[t])) * 3 + 2];
+                            t = Hufts[(Tb[0] + (b & InternalInflateConstants.InflateMask[t])) * 3 + 1];
+                            var c = Hufts[(Tb[0] + (b & InternalInflateConstants.InflateMask[t])) * 3 + 2];
 
                             if (c < 16)
                             {
                                 b >>= t;
                                 k -= t;
-                                blens[index++] = c;
+                                Blens[Index++] = c;
                             }
                             else
                             {
@@ -467,17 +467,17 @@ namespace ClashofClans.Utilities.Compression.ZLib
                                     }
                                     else
                                     {
-                                        bitb = b;
-                                        bitk = k;
-                                        _codec.AvailableBytesIn = n;
-                                        _codec.TotalBytesIn += p - _codec.NextIn;
-                                        _codec.NextIn = p;
-                                        writeAt = q;
+                                        Bitb = b;
+                                        Bitk = k;
+                                        Codec.AvailableBytesIn = n;
+                                        Codec.TotalBytesIn += p - Codec.NextIn;
+                                        Codec.NextIn = p;
+                                        WriteAt = q;
                                         return Flush(r);
                                     }
 
                                     n--;
-                                    b |= (_codec.InputBuffer[p++] & 0xff) << k;
+                                    b |= (Codec.InputBuffer[p++] & 0xff) << k;
                                     k += 8;
                                 }
 
@@ -489,173 +489,173 @@ namespace ClashofClans.Utilities.Compression.ZLib
                                 b >>= i;
                                 k -= i;
 
-                                i = index;
-                                t = table;
+                                i = Index;
+                                t = Table;
                                 if (i + j > 258 + (t & 0x1f) + ((t >> 5) & 0x1f) || c == 16 && i < 1)
                                 {
-                                    blens = null;
-                                    mode = InflateBlockMode.BAD;
-                                    _codec.Message = "invalid bit length repeat";
+                                    Blens = null;
+                                    _mode = InflateBlockMode.BAD;
+                                    Codec.Message = "invalid bit length repeat";
                                     r = ZlibConstants.ZDataError;
 
-                                    bitb = b;
-                                    bitk = k;
-                                    _codec.AvailableBytesIn = n;
-                                    _codec.TotalBytesIn += p - _codec.NextIn;
-                                    _codec.NextIn = p;
-                                    writeAt = q;
+                                    Bitb = b;
+                                    Bitk = k;
+                                    Codec.AvailableBytesIn = n;
+                                    Codec.TotalBytesIn += p - Codec.NextIn;
+                                    Codec.NextIn = p;
+                                    WriteAt = q;
                                     return Flush(r);
                                 }
 
-                                c = c == 16 ? blens[i - 1] : 0;
+                                c = c == 16 ? Blens[i - 1] : 0;
                                 do
                                 {
-                                    blens[i++] = c;
+                                    Blens[i++] = c;
                                 } while (--j != 0);
 
-                                index = i;
+                                Index = i;
                             }
                         }
 
-                        tb[0] = -1;
+                        Tb[0] = -1;
                     {
                         int[] bl = {9};
                         int[] bd = {6};
                         var tl = new int[1];
                         var td = new int[1];
 
-                        t = table;
-                        t = inftree.Inflate_trees_dynamic(257 + (t & 0x1f), 1 + ((t >> 5) & 0x1f), blens, bl, bd, tl,
+                        t = Table;
+                        t = Inftree.Inflate_trees_dynamic(257 + (t & 0x1f), 1 + ((t >> 5) & 0x1f), Blens, bl, bd, tl,
                             td,
-                            hufts, _codec);
+                            Hufts, Codec);
 
                         if (t != ZlibConstants.ZOk)
                         {
                             if (t == ZlibConstants.ZDataError)
                             {
-                                blens = null;
-                                mode = InflateBlockMode.BAD;
+                                Blens = null;
+                                _mode = InflateBlockMode.BAD;
                             }
 
                             r = t;
 
-                            bitb = b;
-                            bitk = k;
-                            _codec.AvailableBytesIn = n;
-                            _codec.TotalBytesIn += p - _codec.NextIn;
-                            _codec.NextIn = p;
-                            writeAt = q;
+                            Bitb = b;
+                            Bitk = k;
+                            Codec.AvailableBytesIn = n;
+                            Codec.TotalBytesIn += p - Codec.NextIn;
+                            Codec.NextIn = p;
+                            WriteAt = q;
                             return Flush(r);
                         }
 
-                        codes.Init(bl[0], bd[0], hufts, tl[0], hufts, td[0]);
+                        Codes.Init(bl[0], bd[0], Hufts, tl[0], Hufts, td[0]);
                     }
-                        mode = InflateBlockMode.CODES;
+                        _mode = InflateBlockMode.CODES;
                         goto case InflateBlockMode.CODES;
 
                     case InflateBlockMode.CODES:
-                        bitb = b;
-                        bitk = k;
-                        _codec.AvailableBytesIn = n;
-                        _codec.TotalBytesIn += p - _codec.NextIn;
-                        _codec.NextIn = p;
-                        writeAt = q;
+                        Bitb = b;
+                        Bitk = k;
+                        Codec.AvailableBytesIn = n;
+                        Codec.TotalBytesIn += p - Codec.NextIn;
+                        Codec.NextIn = p;
+                        WriteAt = q;
 
-                        r = codes.Process(this, r);
+                        r = Codes.Process(this, r);
                         if (r != ZlibConstants.ZStreamEnd) return Flush(r);
 
                         r = ZlibConstants.ZOk;
-                        p = _codec.NextIn;
-                        n = _codec.AvailableBytesIn;
-                        b = bitb;
-                        k = bitk;
-                        q = writeAt;
-                        m = q < readAt ? readAt - q - 1 : end - q;
+                        p = Codec.NextIn;
+                        n = Codec.AvailableBytesIn;
+                        b = Bitb;
+                        k = Bitk;
+                        q = WriteAt;
+                        m = q < ReadAt ? ReadAt - q - 1 : End - q;
 
-                        if (last == 0)
+                        if (Last == 0)
                         {
-                            mode = InflateBlockMode.TYPE;
+                            _mode = InflateBlockMode.TYPE;
                             break;
                         }
 
-                        mode = InflateBlockMode.DRY;
+                        _mode = InflateBlockMode.DRY;
                         goto case InflateBlockMode.DRY;
 
                     case InflateBlockMode.DRY:
-                        writeAt = q;
+                        WriteAt = q;
                         r = Flush(r);
-                        q = writeAt;
+                        q = WriteAt;
 
-                        if (readAt != writeAt)
+                        if (ReadAt != WriteAt)
                         {
-                            bitb = b;
-                            bitk = k;
-                            _codec.AvailableBytesIn = n;
-                            _codec.TotalBytesIn += p - _codec.NextIn;
-                            _codec.NextIn = p;
-                            writeAt = q;
+                            Bitb = b;
+                            Bitk = k;
+                            Codec.AvailableBytesIn = n;
+                            Codec.TotalBytesIn += p - Codec.NextIn;
+                            Codec.NextIn = p;
+                            WriteAt = q;
                             return Flush(r);
                         }
 
-                        mode = InflateBlockMode.DONE;
+                        _mode = InflateBlockMode.DONE;
                         goto case InflateBlockMode.DONE;
 
                     case InflateBlockMode.DONE:
                         r = ZlibConstants.ZStreamEnd;
-                        bitb = b;
-                        bitk = k;
-                        _codec.AvailableBytesIn = n;
-                        _codec.TotalBytesIn += p - _codec.NextIn;
-                        _codec.NextIn = p;
-                        writeAt = q;
+                        Bitb = b;
+                        Bitk = k;
+                        Codec.AvailableBytesIn = n;
+                        Codec.TotalBytesIn += p - Codec.NextIn;
+                        Codec.NextIn = p;
+                        WriteAt = q;
                         return Flush(r);
 
                     case InflateBlockMode.BAD:
                         r = ZlibConstants.ZDataError;
 
-                        bitb = b;
-                        bitk = k;
-                        _codec.AvailableBytesIn = n;
-                        _codec.TotalBytesIn += p - _codec.NextIn;
-                        _codec.NextIn = p;
-                        writeAt = q;
+                        Bitb = b;
+                        Bitk = k;
+                        Codec.AvailableBytesIn = n;
+                        Codec.TotalBytesIn += p - Codec.NextIn;
+                        Codec.NextIn = p;
+                        WriteAt = q;
                         return Flush(r);
 
                     default:
                         r = ZlibConstants.ZStreamError;
 
-                        bitb = b;
-                        bitk = k;
-                        _codec.AvailableBytesIn = n;
-                        _codec.TotalBytesIn += p - _codec.NextIn;
-                        _codec.NextIn = p;
-                        writeAt = q;
+                        Bitb = b;
+                        Bitk = k;
+                        Codec.AvailableBytesIn = n;
+                        Codec.TotalBytesIn += p - Codec.NextIn;
+                        Codec.NextIn = p;
+                        WriteAt = q;
                         return Flush(r);
                 }
         }
 
         internal uint Reset()
         {
-            var oldCheck = check;
-            mode = InflateBlockMode.TYPE;
-            bitk = 0;
-            bitb = 0;
-            readAt = writeAt = 0;
+            var oldCheck = Check;
+            _mode = InflateBlockMode.TYPE;
+            Bitk = 0;
+            Bitb = 0;
+            ReadAt = WriteAt = 0;
 
-            if (checkfn != null)
-                _codec._Adler32 = check = Adler.Adler32(0, null, 0, 0);
+            if (Checkfn != null)
+                Codec._Adler32 = Check = Adler.Adler32(0, null, 0, 0);
             return oldCheck;
         }
 
         internal void SetDictionary(byte[] d, int start, int n)
         {
-            Array.Copy(d, start, window, 0, n);
-            readAt = writeAt = n;
+            Array.Copy(d, start, Window, 0, n);
+            ReadAt = WriteAt = n;
         }
 
         internal int SyncPoint()
         {
-            return mode == InflateBlockMode.LENS ? 1 : 0;
+            return _mode == InflateBlockMode.LENS ? 1 : 0;
         }
 
         private enum InflateBlockMode
@@ -707,10 +707,10 @@ namespace ClashofClans.Utilities.Compression.ZLib
 
             var p = z.NextIn;
             var n = z.AvailableBytesIn;
-            var b = s.bitb;
-            var k = s.bitk;
-            var q = s.writeAt;
-            var m = q < s.readAt ? s.readAt - q - 1 : s.end - q;
+            var b = s.Bitb;
+            var k = s.Bitk;
+            var q = s.WriteAt;
+            var m = q < s.ReadAt ? s.ReadAt - q - 1 : s.End - q;
 
             var ml = InternalInflateConstants.InflateMask[bl];
             var md = InternalInflateConstants.InflateMask[bd];
@@ -734,7 +734,7 @@ namespace ClashofClans.Utilities.Compression.ZLib
                     b >>= tp[tpIndexT3 + 1];
                     k -= tp[tpIndexT3 + 1];
 
-                    s.window[q++] = (byte) tp[tpIndexT3 + 2];
+                    s.Window[q++] = (byte) tp[tpIndexT3 + 2];
                     m--;
                     continue;
                 }
@@ -792,13 +792,13 @@ namespace ClashofClans.Utilities.Compression.ZLib
                                     r = q - d;
                                     if (q - r > 0 && 2 > q - r)
                                     {
-                                        s.window[q++] = s.window[r++];
-                                        s.window[q++] = s.window[r++];
+                                        s.Window[q++] = s.Window[r++];
+                                        s.Window[q++] = s.Window[r++];
                                         c -= 2;
                                     }
                                     else
                                     {
-                                        Array.Copy(s.window, r, s.window, q, 2);
+                                        Array.Copy(s.Window, r, s.Window, q, 2);
                                         q += 2;
                                         r += 2;
                                         c -= 2;
@@ -809,10 +809,10 @@ namespace ClashofClans.Utilities.Compression.ZLib
                                     r = q - d;
                                     do
                                     {
-                                        r += s.end;
+                                        r += s.End;
                                     } while (r < 0);
 
-                                    e = s.end - r;
+                                    e = s.End - r;
                                     if (c > e)
                                     {
                                         c -= e;
@@ -820,12 +820,12 @@ namespace ClashofClans.Utilities.Compression.ZLib
                                         {
                                             do
                                             {
-                                                s.window[q++] = s.window[r++];
+                                                s.Window[q++] = s.Window[r++];
                                             } while (--e != 0);
                                         }
                                         else
                                         {
-                                            Array.Copy(s.window, r, s.window, q, e);
+                                            Array.Copy(s.Window, r, s.Window, q, e);
                                             q += e;
                                         }
 
@@ -837,12 +837,12 @@ namespace ClashofClans.Utilities.Compression.ZLib
                                 {
                                     do
                                     {
-                                        s.window[q++] = s.window[r++];
+                                        s.Window[q++] = s.Window[r++];
                                     } while (--c != 0);
                                 }
                                 else
                                 {
-                                    Array.Copy(s.window, r, s.window, q, c);
+                                    Array.Copy(s.Window, r, s.Window, q, c);
                                     q += c;
                                 }
 
@@ -866,12 +866,12 @@ namespace ClashofClans.Utilities.Compression.ZLib
                                 p -= c;
                                 k -= c << 3;
 
-                                s.bitb = b;
-                                s.bitk = k;
+                                s.Bitb = b;
+                                s.Bitk = k;
                                 z.AvailableBytesIn = n;
                                 z.TotalBytesIn += p - z.NextIn;
                                 z.NextIn = p;
-                                s.writeAt = q;
+                                s.WriteAt = q;
 
                                 return ZlibConstants.ZDataError;
                             }
@@ -889,7 +889,7 @@ namespace ClashofClans.Utilities.Compression.ZLib
 
                         b >>= tp[tpIndexT3 + 1];
                         k -= tp[tpIndexT3 + 1];
-                        s.window[q++] = (byte) tp[tpIndexT3 + 2];
+                        s.Window[q++] = (byte) tp[tpIndexT3 + 2];
                         m--;
                         break;
                     }
@@ -902,12 +902,12 @@ namespace ClashofClans.Utilities.Compression.ZLib
                         p -= c;
                         k -= c << 3;
 
-                        s.bitb = b;
-                        s.bitk = k;
+                        s.Bitb = b;
+                        s.Bitk = k;
                         z.AvailableBytesIn = n;
                         z.TotalBytesIn += p - z.NextIn;
                         z.NextIn = p;
-                        s.writeAt = q;
+                        s.WriteAt = q;
 
                         return ZlibConstants.ZStreamEnd;
                     }
@@ -920,12 +920,12 @@ namespace ClashofClans.Utilities.Compression.ZLib
                     p -= c;
                     k -= c << 3;
 
-                    s.bitb = b;
-                    s.bitk = k;
+                    s.Bitb = b;
+                    s.Bitk = k;
                     z.AvailableBytesIn = n;
                     z.TotalBytesIn += p - z.NextIn;
                     z.NextIn = p;
-                    s.writeAt = q;
+                    s.WriteAt = q;
 
                     return ZlibConstants.ZDataError;
                 } while (true);
@@ -937,12 +937,12 @@ namespace ClashofClans.Utilities.Compression.ZLib
             p -= c;
             k -= c << 3;
 
-            s.bitb = b;
-            s.bitk = k;
+            s.Bitb = b;
+            s.Bitk = k;
             z.AvailableBytesIn = n;
             z.TotalBytesIn += p - z.NextIn;
             z.NextIn = p;
-            s.writeAt = q;
+            s.WriteAt = q;
 
             return ZlibConstants.ZOk;
         }
@@ -965,14 +965,14 @@ namespace ClashofClans.Utilities.Compression.ZLib
             int tindex;
             int e;
 
-            var z = blocks._codec;
+            var z = blocks.Codec;
 
             var p = z.NextIn;
             var n = z.AvailableBytesIn;
-            var b = blocks.bitb;
-            var k = blocks.bitk;
-            var q = blocks.writeAt;
-            var m = q < blocks.readAt ? blocks.readAt - q - 1 : blocks.end - q;
+            var b = blocks.Bitb;
+            var k = blocks.Bitk;
+            var q = blocks.WriteAt;
+            var m = q < blocks.ReadAt ? blocks.ReadAt - q - 1 : blocks.End - q;
 
             while (true)
                 switch (mode)
@@ -980,20 +980,20 @@ namespace ClashofClans.Utilities.Compression.ZLib
                     case START:
                         if (m >= 258 && n >= 10)
                         {
-                            blocks.bitb = b;
-                            blocks.bitk = k;
+                            blocks.Bitb = b;
+                            blocks.Bitk = k;
                             z.AvailableBytesIn = n;
                             z.TotalBytesIn += p - z.NextIn;
                             z.NextIn = p;
-                            blocks.writeAt = q;
+                            blocks.WriteAt = q;
                             r = InflateFast(lbits, dbits, ltree, ltree_index, dtree, dtree_index, blocks, z);
 
                             p = z.NextIn;
                             n = z.AvailableBytesIn;
-                            b = blocks.bitb;
-                            k = blocks.bitk;
-                            q = blocks.writeAt;
-                            m = q < blocks.readAt ? blocks.readAt - q - 1 : blocks.end - q;
+                            b = blocks.Bitb;
+                            k = blocks.Bitk;
+                            q = blocks.WriteAt;
+                            m = q < blocks.ReadAt ? blocks.ReadAt - q - 1 : blocks.End - q;
 
                             if (r != ZlibConstants.ZOk)
                             {
@@ -1020,12 +1020,12 @@ namespace ClashofClans.Utilities.Compression.ZLib
                             }
                             else
                             {
-                                blocks.bitb = b;
-                                blocks.bitk = k;
+                                blocks.Bitb = b;
+                                blocks.Bitk = k;
                                 z.AvailableBytesIn = n;
                                 z.TotalBytesIn += p - z.NextIn;
                                 z.NextIn = p;
-                                blocks.writeAt = q;
+                                blocks.WriteAt = q;
                                 return blocks.Flush(r);
                             }
 
@@ -1073,12 +1073,12 @@ namespace ClashofClans.Utilities.Compression.ZLib
                         z.Message = "invalid literal/length code";
                         r = ZlibConstants.ZDataError;
 
-                        blocks.bitb = b;
-                        blocks.bitk = k;
+                        blocks.Bitb = b;
+                        blocks.Bitk = k;
                         z.AvailableBytesIn = n;
                         z.TotalBytesIn += p - z.NextIn;
                         z.NextIn = p;
-                        blocks.writeAt = q;
+                        blocks.WriteAt = q;
                         return blocks.Flush(r);
 
                     case LENEXT:
@@ -1092,12 +1092,12 @@ namespace ClashofClans.Utilities.Compression.ZLib
                             }
                             else
                             {
-                                blocks.bitb = b;
-                                blocks.bitk = k;
+                                blocks.Bitb = b;
+                                blocks.Bitk = k;
                                 z.AvailableBytesIn = n;
                                 z.TotalBytesIn += p - z.NextIn;
                                 z.NextIn = p;
-                                blocks.writeAt = q;
+                                blocks.WriteAt = q;
                                 return blocks.Flush(r);
                             }
 
@@ -1128,12 +1128,12 @@ namespace ClashofClans.Utilities.Compression.ZLib
                             }
                             else
                             {
-                                blocks.bitb = b;
-                                blocks.bitk = k;
+                                blocks.Bitb = b;
+                                blocks.Bitk = k;
                                 z.AvailableBytesIn = n;
                                 z.TotalBytesIn += p - z.NextIn;
                                 z.NextIn = p;
-                                blocks.writeAt = q;
+                                blocks.WriteAt = q;
                                 return blocks.Flush(r);
                             }
 
@@ -1167,12 +1167,12 @@ namespace ClashofClans.Utilities.Compression.ZLib
                         z.Message = "invalid distance code";
                         r = ZlibConstants.ZDataError;
 
-                        blocks.bitb = b;
-                        blocks.bitk = k;
+                        blocks.Bitb = b;
+                        blocks.Bitk = k;
                         z.AvailableBytesIn = n;
                         z.TotalBytesIn += p - z.NextIn;
                         z.NextIn = p;
-                        blocks.writeAt = q;
+                        blocks.WriteAt = q;
                         return blocks.Flush(r);
 
                     case DISTEXT:
@@ -1186,12 +1186,12 @@ namespace ClashofClans.Utilities.Compression.ZLib
                             }
                             else
                             {
-                                blocks.bitb = b;
-                                blocks.bitk = k;
+                                blocks.Bitb = b;
+                                blocks.Bitk = k;
                                 z.AvailableBytesIn = n;
                                 z.TotalBytesIn += p - z.NextIn;
                                 z.NextIn = p;
-                                blocks.writeAt = q;
+                                blocks.WriteAt = q;
                                 return blocks.Flush(r);
                             }
 
@@ -1211,47 +1211,47 @@ namespace ClashofClans.Utilities.Compression.ZLib
                     case COPY:
                         var f = q - dist;
                         while (f < 0)
-                            f += blocks.end;
+                            f += blocks.End;
                         while (len != 0)
                         {
                             if (m == 0)
                             {
-                                if (q == blocks.end && blocks.readAt != 0)
+                                if (q == blocks.End && blocks.ReadAt != 0)
                                 {
                                     q = 0;
-                                    m = q < blocks.readAt ? blocks.readAt - q - 1 : blocks.end - q;
+                                    m = q < blocks.ReadAt ? blocks.ReadAt - q - 1 : blocks.End - q;
                                 }
 
                                 if (m == 0)
                                 {
-                                    blocks.writeAt = q;
+                                    blocks.WriteAt = q;
                                     r = blocks.Flush(r);
-                                    q = blocks.writeAt;
-                                    m = q < blocks.readAt ? blocks.readAt - q - 1 : blocks.end - q;
+                                    q = blocks.WriteAt;
+                                    m = q < blocks.ReadAt ? blocks.ReadAt - q - 1 : blocks.End - q;
 
-                                    if (q == blocks.end && blocks.readAt != 0)
+                                    if (q == blocks.End && blocks.ReadAt != 0)
                                     {
                                         q = 0;
-                                        m = q < blocks.readAt ? blocks.readAt - q - 1 : blocks.end - q;
+                                        m = q < blocks.ReadAt ? blocks.ReadAt - q - 1 : blocks.End - q;
                                     }
 
                                     if (m == 0)
                                     {
-                                        blocks.bitb = b;
-                                        blocks.bitk = k;
+                                        blocks.Bitb = b;
+                                        blocks.Bitk = k;
                                         z.AvailableBytesIn = n;
                                         z.TotalBytesIn += p - z.NextIn;
                                         z.NextIn = p;
-                                        blocks.writeAt = q;
+                                        blocks.WriteAt = q;
                                         return blocks.Flush(r);
                                     }
                                 }
                             }
 
-                            blocks.window[q++] = blocks.window[f++];
+                            blocks.Window[q++] = blocks.Window[f++];
                             m--;
 
-                            if (f == blocks.end)
+                            if (f == blocks.End)
                                 f = 0;
                             len--;
                         }
@@ -1262,33 +1262,33 @@ namespace ClashofClans.Utilities.Compression.ZLib
                     case LIT:
                         if (m == 0)
                         {
-                            if (q == blocks.end && blocks.readAt != 0)
+                            if (q == blocks.End && blocks.ReadAt != 0)
                             {
                                 q = 0;
-                                m = q < blocks.readAt ? blocks.readAt - q - 1 : blocks.end - q;
+                                m = q < blocks.ReadAt ? blocks.ReadAt - q - 1 : blocks.End - q;
                             }
 
                             if (m == 0)
                             {
-                                blocks.writeAt = q;
+                                blocks.WriteAt = q;
                                 r = blocks.Flush(r);
-                                q = blocks.writeAt;
-                                m = q < blocks.readAt ? blocks.readAt - q - 1 : blocks.end - q;
+                                q = blocks.WriteAt;
+                                m = q < blocks.ReadAt ? blocks.ReadAt - q - 1 : blocks.End - q;
 
-                                if (q == blocks.end && blocks.readAt != 0)
+                                if (q == blocks.End && blocks.ReadAt != 0)
                                 {
                                     q = 0;
-                                    m = q < blocks.readAt ? blocks.readAt - q - 1 : blocks.end - q;
+                                    m = q < blocks.ReadAt ? blocks.ReadAt - q - 1 : blocks.End - q;
                                 }
 
                                 if (m == 0)
                                 {
-                                    blocks.bitb = b;
-                                    blocks.bitk = k;
+                                    blocks.Bitb = b;
+                                    blocks.Bitk = k;
                                     z.AvailableBytesIn = n;
                                     z.TotalBytesIn += p - z.NextIn;
                                     z.NextIn = p;
-                                    blocks.writeAt = q;
+                                    blocks.WriteAt = q;
                                     return blocks.Flush(r);
                                 }
                             }
@@ -1296,7 +1296,7 @@ namespace ClashofClans.Utilities.Compression.ZLib
 
                         r = ZlibConstants.ZOk;
 
-                        blocks.window[q++] = (byte) lit;
+                        blocks.Window[q++] = (byte) lit;
                         m--;
 
                         mode = START;
@@ -1310,18 +1310,18 @@ namespace ClashofClans.Utilities.Compression.ZLib
                             p--;
                         }
 
-                        blocks.writeAt = q;
+                        blocks.WriteAt = q;
                         r = blocks.Flush(r);
-                        q = blocks.writeAt;
+                        q = blocks.WriteAt;
 
-                        if (blocks.readAt != blocks.writeAt)
+                        if (blocks.ReadAt != blocks.WriteAt)
                         {
-                            blocks.bitb = b;
-                            blocks.bitk = k;
+                            blocks.Bitb = b;
+                            blocks.Bitk = k;
                             z.AvailableBytesIn = n;
                             z.TotalBytesIn += p - z.NextIn;
                             z.NextIn = p;
-                            blocks.writeAt = q;
+                            blocks.WriteAt = q;
                             return blocks.Flush(r);
                         }
 
@@ -1330,35 +1330,35 @@ namespace ClashofClans.Utilities.Compression.ZLib
 
                     case END:
                         r = ZlibConstants.ZStreamEnd;
-                        blocks.bitb = b;
-                        blocks.bitk = k;
+                        blocks.Bitb = b;
+                        blocks.Bitk = k;
                         z.AvailableBytesIn = n;
                         z.TotalBytesIn += p - z.NextIn;
                         z.NextIn = p;
-                        blocks.writeAt = q;
+                        blocks.WriteAt = q;
                         return blocks.Flush(r);
 
                     case BADCODE:
 
                         r = ZlibConstants.ZDataError;
 
-                        blocks.bitb = b;
-                        blocks.bitk = k;
+                        blocks.Bitb = b;
+                        blocks.Bitk = k;
                         z.AvailableBytesIn = n;
                         z.TotalBytesIn += p - z.NextIn;
                         z.NextIn = p;
-                        blocks.writeAt = q;
+                        blocks.WriteAt = q;
                         return blocks.Flush(r);
 
                     default:
                         r = ZlibConstants.ZStreamError;
 
-                        blocks.bitb = b;
-                        blocks.bitk = k;
+                        blocks.Bitb = b;
+                        blocks.Bitk = k;
                         z.AvailableBytesIn = n;
                         z.TotalBytesIn += p - z.NextIn;
                         z.NextIn = p;
-                        blocks.writeAt = q;
+                        blocks.WriteAt = q;
                         return blocks.Flush(r);
                 }
         }
@@ -1400,7 +1400,7 @@ namespace ClashofClans.Utilities.Compression.ZLib
             return ZlibConstants.ZOk;
         }
 
-        internal int Inflate(FlushType flush)
+        internal int Inflate()
         {
             if (Codec.InputBuffer == null)
                 throw new ZlibException("InputBuffer is null. ");
@@ -1694,7 +1694,7 @@ namespace ClashofClans.Utilities.Compression.ZLib
             return ZlibConstants.ZOk;
         }
 
-        internal int SyncPoint(ZlibCodec z)
+        internal int SyncPoint()
         {
             return Blocks.SyncPoint();
         }

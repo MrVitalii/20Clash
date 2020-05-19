@@ -4,10 +4,10 @@ using Interop = System.Runtime.InteropServices;
 
 namespace ClashofClans.Utilities.Compression.ZLib
 {
-    [Interop.GuidAttribute("ebc25cf6-9120-4283-b972-0e5520d0000C")]
-    [Interop.ComVisibleAttribute(true)]
+    [Interop.Guid("ebc25cf6-9120-4283-b972-0e5520d0000C")]
+    [Interop.ComVisible(true)]
 #if !NETCF
-    [Interop.ClassInterfaceAttribute(Interop.ClassInterfaceType.AutoDispatch)]
+    [Interop.ClassInterface(Interop.ClassInterfaceType.AutoDispatch)]
 #endif
     public class Crc32
     {
