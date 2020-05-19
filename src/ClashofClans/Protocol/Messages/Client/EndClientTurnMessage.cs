@@ -73,7 +73,7 @@ namespace ClashofClans.Protocol.Messages.Client
                     }.SendAsync();
 
                     Logger.Log(
-                        $"Command {type} is unhandled.",
+                        $"Command {type} is unhandled. Content: {ToString()}",
                         GetType(), Logger.ErrorLevel.Warning);
                     return;
                 }

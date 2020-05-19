@@ -19,6 +19,7 @@ namespace ClashofClans.Protocol
                 {505, typeof(LogicCancelConstructionCommand)},
                 {506, typeof(LogicCollectResourcesCommand)},
                 {507, typeof(LogicClearObstacleCommand)},
+                {510, typeof(LogicBuyTrapCommand)},
                 {519, typeof(LogicMissionProgressCommand)},
                 {520, typeof(LogicUnlockBuildingCommand)},
                 {521, typeof(LogicFreeWorkerCommand)},
@@ -34,6 +35,8 @@ namespace ClashofClans.Protocol
                 {591, typeof(LogicSwitchVillageStateCommand)},
                 {597, typeof(LogicEventsSeenCommand)},
                 {603, typeof(LogicEndCombatCommand)},
+                {615, typeof(LogicBuyDailyDealItemCommand)},
+                {616, typeof(LogicDailyDealsSeenCommand)},
                 {705, typeof(LogicPlaceHeroCommand)},
                 {800, typeof(LogicMatchmakingCommand)},
                 {802, typeof(LogicAcceptChatRulesCommand)}

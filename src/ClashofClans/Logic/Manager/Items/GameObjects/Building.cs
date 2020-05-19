@@ -14,9 +14,12 @@ namespace ClashofClans.Logic.Manager.Items.GameObjects
         public bool AttackMode;
         public bool BoostPause;
         public int Data;
+        public bool Gearing;
         public int Id;
-
         public bool Locked;
+        public int WallIndex;
+        public int WallPosition;
+        public int WallX;
 
         public Building(Home.Home home) : base(home)
         {
@@ -41,7 +44,7 @@ namespace ClashofClans.Logic.Manager.Items.GameObjects
             if (BuildingData.CanStoreResources)
                 AddComponent(new ResourceStorageComponent(this));
 
-            if (BuildingData.UpgradesUnits) 
+            if (BuildingData.UpgradesUnits)
                 AddComponent(new UnitUpgradeComponent(this));
         }
 
@@ -139,6 +142,8 @@ namespace ClashofClans.Logic.Manager.Items.GameObjects
             base.Tick();
         }
 
+        public bool IsStraightWall => BuildingData.Name == "WallStraight";
+
         #region Json
 
         public override JObject Save()
@@ -164,6 +169,18 @@ namespace ClashofClans.Logic.Manager.Items.GameObjects
 
             if (BoostPause)
                 jObject.Add("boost_pause", true);
+
+            if (Gearing)
+                jObject.Add("gearing", true);
+
+            if (WallIndex > 0)
+                jObject.Add("wI", WallIndex);
+
+            if (WallPosition > 0)
+                jObject.Add("wP", WallPosition);
+
+            if (WallX > 0)
+                jObject.Add("wX", WallX);
 
             return jObject;
         }
@@ -210,6 +227,21 @@ namespace ClashofClans.Logic.Manager.Items.GameObjects
 
             if (jObject.ContainsKey("boost_pause"))
                 BoostPause = jObject["boost_pause"].ToObject<bool>();
+
+            if (jObject.ContainsKey("gearing"))
+                Gearing = jObject["gearing"].ToObject<bool>();
+
+            if (IsStraightWall)
+            {
+                if(jObject.ContainsKey("wI"))
+                    WallIndex = jObject["wI"].ToObject<int>();
+
+                if (jObject.ContainsKey("wP"))
+                    WallPosition = jObject["wP"].ToObject<int>();
+
+                if (jObject.ContainsKey("wX"))
+                    WallX = jObject["wX"].ToObject<int>();
+            }
 
             LoadComponents();
 

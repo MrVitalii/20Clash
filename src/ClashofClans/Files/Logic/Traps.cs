@@ -56,13 +56,13 @@ namespace ClashofClans.Files.Logic
 
         public string BuildResource { get; set; }
 
-        public int BuildTimeD { get; set; }
+        public int[] BuildTimeD { get; set; }
 
-        public int BuildTimeH { get; set; }
+        public int[] BuildTimeH { get; set; }
 
-        public int BuildTimeM { get; set; }
+        public int[] BuildTimeM { get; set; }
 
-        public int BuildCost { get; set; }
+        public int[] BuildCost { get; set; }
 
         public int TownHallLevel { get; set; }
 
@@ -141,5 +141,10 @@ namespace ClashofClans.Files.Logic
         public int UpgradeLevelByTH { get; set; }
 
         public int HintPriority { get; set; }
+
+        public int GetBuildTime(int level)
+        {
+            return BuildTimeD[level] * 86400 + BuildTimeH[level] * 3600 + BuildTimeM[level] * 60;
+        }
     }
 }

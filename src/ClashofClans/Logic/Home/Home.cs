@@ -290,6 +290,7 @@ namespace ClashofClans.Logic.Home
                     var storageAvailable = ComponentManager.MaxStoredResource(name);
                     var storageUsed = Resources.GetCount(3000001);
 
+                    if (storageUsed > storageAvailable) return -1;
                     if (storageUsed + amount > storageAvailable)
                         amount = storageAvailable - storageUsed;
 
@@ -302,6 +303,7 @@ namespace ClashofClans.Logic.Home
                     var storageAvailable = ComponentManager.MaxStoredResource(name);
                     var storageUsed = Resources.GetCount(3000002);
 
+                    if (storageUsed > storageAvailable) return -1;
                     if (storageUsed + amount > storageAvailable)
                         amount = storageAvailable - storageUsed;
 
@@ -314,6 +316,7 @@ namespace ClashofClans.Logic.Home
                     var storageAvailable = ComponentManager.MaxStoredResource(name);
                     var storageUsed = Resources.GetCount(3000003);
 
+                    if (storageUsed > storageAvailable) return -1;
                     if (storageUsed + amount > storageAvailable)
                         amount = storageAvailable - storageUsed;
 
@@ -332,6 +335,7 @@ namespace ClashofClans.Logic.Home
                     var storageAvailable = ComponentManager.MaxStoredResource(name);
                     var storageUsed = Resources.GetCount(3000007);
 
+                    if (storageUsed > storageAvailable) return -1;
                     if (storageUsed + amount > storageAvailable)
                         amount = storageAvailable - storageUsed;
 
@@ -344,6 +348,7 @@ namespace ClashofClans.Logic.Home
                     var storageAvailable = ComponentManager.MaxStoredResource(name);
                     var storageUsed = Resources.GetCount(3000008);
 
+                    if (storageUsed > storageAvailable) return -1;
                     if (storageUsed + amount > storageAvailable)
                         amount = storageAvailable - storageUsed;
 

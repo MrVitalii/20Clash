@@ -32,13 +32,6 @@ namespace ClashofClans.Protocol.Commands.Client
                 Logger.Log($"Collected: {building.ResourceProductionComponent.AvailableToCollect}", GetType(), Logger.ErrorLevel.Debug);
 
                 home.ComponentManager.CollectResources(building.Data);
-
-                var resourceProductionComponent = building.ResourceProductionComponent;
-                var resourceProduces = resourceProductionComponent.ProducesResource;
-                var maxStoredResource =
-                    home.ComponentManager.MaxStoredResource(resourceProduces);
-
-                //Logger.Log($"Storage used: {home.Resources.GetCount(resourceProductionComponent.ResourceData.GetGlobalId())}, Available: {maxStoredResource} - {resourceProduces}", GetType(), Logger.ErrorLevel.Debug);
             }
             else
             {

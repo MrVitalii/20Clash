@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Numerics;
+using ClashofClans.Files;
+using ClashofClans.Files.Logic;
 using ClashofClans.Logic;
+using ClashofClans.Logic.Manager.Items.GameObjects;
 using DotNetty.Buffers;
 
 namespace ClashofClans.Protocol.Commands.Client
@@ -36,10 +39,10 @@ namespace ClashofClans.Protocol.Commands.Client
         public override void Process()
         {
             var home = Device.Player.Home;
-            //var buildings = home.GameObjectManager.GetBuildings();
+            var buildings = home.GameObjectManager.GetBuildings();
 
-            /*if (home.GameObjectManager.IsWorkerAvailable())
-            {
+            //if (home.GameObjectManager.IsWorkerAvailable())
+            //{
                 var data = Csv.Tables.Get(Csv.Files.Buildings).GetDataWithId<Buildings>(BuildingData);
                 var cost = data.BuildCost[0];
 
@@ -50,19 +53,18 @@ namespace ClashofClans.Protocol.Commands.Client
 
                     foreach (var pos in Positions)
                     {
-                        var building = new Building
+                        var building = new Building(home)
                         {
-                            X = (int) pos.X,
-                            Y = (int) pos.Y,
+                            Position = pos,
                             Data = BuildingData,
                             Id = 500000000 + buildings.Count,
-                            Wi = wallId
+                            WallIndex = wallId
                         };
 
                         if (count == 0)
-                            building.Wp = 1;
+                            building.WallPosition = 1;
 
-                        building.Wx = count++;
+                        building.WallX = count++;
 
                         buildings.Add(building);
                     }
@@ -71,13 +73,11 @@ namespace ClashofClans.Protocol.Commands.Client
                 {
                     Device.Disconnect("Failed to buy wall.");
                 }
-            }
+            /*}
             else
             {
                 Device.Disconnect("No worker available!");
             }*/
-
-            Device.Disconnect("Failed to buy wall.");
         }
     }
 }
