@@ -20,13 +20,13 @@ namespace ClashofClans.Files.Logic
 
         public string ExportName { get; set; }
 
-        public int BuildTimeD { get; set; }
+        public int[] BuildTimeD { get; set; }
 
-        public int BuildTimeH { get; set; }
+        public int[] BuildTimeH { get; set; }
 
-        public int BuildTimeM { get; set; }
+        public int[] BuildTimeM { get; set; }
 
-        public int BuildTimeS { get; set; }
+        public int[] BuildTimeS { get; set; }
 
         public string BuildResource { get; set; }
 
@@ -69,5 +69,13 @@ namespace ClashofClans.Files.Logic
         public int StrengthWeight { get; set; }
 
         public string ActivationEffect { get; set; }
+
+       public int GetBuildTime(int level)
+        {
+            return this.BuildTimeD[level] * 86400
+                 + this.BuildTimeH[level] * 3600
+                 + this.BuildTimeM[level] * 60
+                 + this.BuildTimeS[level];
+        }
     }
 }
